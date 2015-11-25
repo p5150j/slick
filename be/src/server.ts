@@ -18,16 +18,17 @@ for (var model of config.globFiles(config.models)) {
     require(path.resolve(model));
 }
 
+
+app.use(logger("dev"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+
 //Routes
 for (var route of config.globFiles(config.routes)) {
     let routerController = require(path.resolve(route));
     new routerController(app);
 }
-
-
-app.use(logger("dev"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
 
 //app.get('/', (req, res) => {

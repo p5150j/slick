@@ -20,8 +20,7 @@ class ArticleController {
 
 	public create = (req: express.Request, res: express.Response): void => {
 		var newArticle = new Article(req.body);
-		res.json(req.body);
-		return;
+
 		console.log(req);
 		newArticle.save((err: Error, article: mongoose.Document) => {
 			if (err) {
