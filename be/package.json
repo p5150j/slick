@@ -2,7 +2,12 @@
   "name": "slick",
   "version": "0.0.0",
   "dependencies": {
-    "express": "^4.13.3"
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "glob": "^6.0.1",
+    "lodash": "^3.10.1",
+    "mongoose": "^4.2.7",
+    "morgan": "^1.6.1"
   },
   "scripts": {},
   "devDependencies": {
