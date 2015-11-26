@@ -27,4 +27,4 @@ gulp.task('watch', function() {
     gulp.watch('src/**/*.ts', ['build']);
 });
 
-gulp.task('default', ['build']);
+gulp.task('default', ['nodemon']);

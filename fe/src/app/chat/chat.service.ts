@@ -6,7 +6,7 @@ export class ChatService {
   }
 
   getArticles(limit: number = 30): angular.IPromise<any[]> {
-    return this.$http.get(this.apiUrl + '/articles?per_page=' + limit)
+    return this.$http.get(this.apiUrl + 'articles?per_page=' + limit)
       .then((response: any): any => {
         return response.data;
       })

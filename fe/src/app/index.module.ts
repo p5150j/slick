@@ -7,13 +7,10 @@ import { MainController } from './main/main.controller';
 import { GithubContributor } from '../app/components/githubContributor/githubContributor.service';
 import { WebDevTecService } from '../app/components/webDevTec/webDevTec.service';
 import { acmeNavbar } from '../app/components/navbar/navbar.directive';
-import { acmeMalarkey } from '../app/components/malarkey/malarkey.directive';
 
-//import { init } from '../app/chat/chat.module';
-
-declare var malarkey: any;
 declare var moment: moment.MomentStatic;
-var apiUrl: string = 'http://locahost:3002/api/';
+var apiUrl: string = 'http://localhost:3002/api/';
+var socketUrl: string = 'http://localhost:3002';
 
 module slick {
   'use strict';
@@ -21,9 +18,9 @@ module slick {
   angular.module('slick', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria', 'ui.router', 'ngMaterial', 'toastr',
     'slick.chat'
   ])
-    .constant('malarkey', malarkey)
     .constant('moment', moment)
     .constant('apiUrl', apiUrl)
+    .constant('socketUrl', socketUrl)
     .config(config)
     .config(routerConfig)
     .run(runBlock)
@@ -31,5 +28,10 @@ module slick {
     .service('webDevTec', WebDevTecService)
     .controller('MainController', MainController)
     .directive('acmeNavbar', acmeNavbar)
-    .directive('acmeMalarkey', acmeMalarkey);
+  ;
+
+  // load all other modules @TODO: refactor
+  require('../app/chat/chat.module');
+
 }
+

@@ -2,6 +2,7 @@
 /// <reference path="../../typings/tsd.d.ts" />
 import express = require("express");
 import mongoose = require("mongoose");
+
 var Article: mongoose.Model<mongoose.Document> = mongoose.model("Article");
 
 class ArticleController {

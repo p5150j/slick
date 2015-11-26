@@ -3,13 +3,19 @@ import express = require('express');
 import path = require('path');
 import logger = require('morgan');
 import bodyParser = require('body-parser');
+import cors = require('cors')
 
 import config = require("./config");
 import mongoose = require("mongoose");
 
+import socketio = require('socket.io');
 
-import routes = require('./routes/index');
-import users = require('./routes/users');
+
+//import routes = require('./routes/index');
+//import users = require('./routes/users');
+
+import {SocketHandler} from './socket';
+
 
 var app : express.Express = express();
 
@@ -22,6 +28,7 @@ for (var model of config.globFiles(config.models)) {
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
 
 
 //Routes
@@ -64,9 +71,15 @@ app.use((err: any, req: express.Request, res: express.Response, next) => {
 // Connect to mongodb
 mongoose.connect(config.dbname);
 
+var port: number = process.env.PORT || 3002,
+    http = require('http').createServer(app),
+    io = socketio(http),
+    socketHandler = new SocketHandler(io)
+    ;
 
-var port: number = process.env.PORT || 3002;
-var server = app.listen(port, () => {
-    var listeningPort: number = server.address().port;
+
+//server.listen(port, () => {
+http.listen(port, () => {
+    var listeningPort: number = http.address().port;
     console.log('The server is listening on port: ' + listeningPort);
 });

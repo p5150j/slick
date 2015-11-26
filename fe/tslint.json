@@ -6,7 +6,7 @@
       ["_", "isDefined"]
     ],
     "class-name": true,
-    "comment-format": [true,
+    "comment-format": [false,
       "check-space",
       "check-lowercase"
     ],

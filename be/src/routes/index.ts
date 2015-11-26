@@ -2,7 +2,7 @@
 /// <reference path='../../typings/tsd.d.ts' />
 import express = require("express");
 
-class IndexController {
+class IndexRoute {
   constructor() {
   }
 
@@ -11,4 +11,4 @@ class IndexController {
   }
 }
 
-export = IndexController;
+export = IndexRoute;

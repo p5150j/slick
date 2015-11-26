@@ -1,8 +1,32 @@
-<div layout="vertical" layout-fill>
+<div layout="column">
 
+
+  <div ng-show="!vm.connected">
+    <md-input-container >
+      <label>Enter your name</label>
+      <input type="text" ng-model="vm.userName" required md-maxlength="10">
+    </md-input-container>
+    <md-button class="md-success" ng-click="vm.login()">Login</md-button>
+  </div>
+
+  <div ng-show="vm.connected">
+    <md-input-container >
+      <label>Send a message</label>
+      <input type="text" ng-model="vm.currentMessage">
+    </md-input-container>
+    <md-button class="md-success" ng-click="vm.sendMessage()">Send</md-button>
+  </div>
+
+
+  <md-button ng-click="vm.get()">Get</md-button>
   <md-content>
 
-  {{vm.data}}
-    </md-content>
+    {{vm.data}}
+  </md-content>
+
+  <div layout="horizontal"><h3>logMessages</h3>{{vm.logMessages}}</div>
+  <div layout="horizontal"><h3>participantMessages</h3>{{vm.participantMessages}}</div>
+  <div layout="horizontal"><h3>chatMessages</h3>{{vm.chatMessages}}</div>
+
 
 </div>
