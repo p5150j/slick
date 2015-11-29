@@ -1,5 +1,6 @@
 /// <reference path="../typings/tsd.d.ts" />
-import express = require('express');
+import * as express from 'express';
+
 import path = require('path');
 import logger = require('morgan');
 import bodyParser = require('body-parser');
@@ -11,10 +12,14 @@ import mongoose = require("mongoose");
 import socketio = require('socket.io');
 
 
+import {AuthenticationController}  from './auth/AuthenticationController';
+
+
 //import routes = require('./routes/index');
 //import users = require('./routes/users');
 
 import {SocketHandler} from './socket';
+import {ArticleRoute} from "./routes/ArticleRoute";
 
 
 var app : express.Express = express();
@@ -25,18 +30,27 @@ for (var model of config.globFiles(config.models)) {
 }
 
 
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
+let apiRouter = express.Router();
+let authRouter = express.Router();
 
-//Routes
-for (var route of config.globFiles(config.routes)) {
-    let routerController = require(path.resolve(route));
-    new routerController(app);
-}
+new AuthenticationController(app)
+  .appendRoutes(authRouter)
+  .protectRoutes(apiRouter);
 
+new ArticleRoute().appendRoutes(apiRouter);
+
+// middleware specific to this router
+//apiRouter.use((req, res, next) => {
+//  console.log(req, res);
+//  next();
+//});
+app.use('/api', apiRouter);
+app.use('/', authRouter);
 
 //app.get('/', (req, res) => {
 //    res.send('hello');
@@ -50,22 +64,22 @@ app.use(function(req: express.Request, res: express.Response, next: Function) {
 
 // production error handler
 // no stacktraces leaked to user
-app.use((err: any, req: express.Request, res: express.Response, next) => {
-    res.status(err.status || 500);
-    res.send({
-        message: err.message,
-        error: {}
-    });
-});
+//app.use((err: any, req: express.Request, res: express.Response, next) => {
+//    res.status(err.status || 500);
+//    res.send({
+//        message: err.message,
+//        error: {}
+//    });
+//});
 
 //if (app.get("env") === "development") {
-    app.use((err: Error, req: express.Request, res: express.Response, next) => {
-        res.status(500);
-        res.send({
-            message: err.message,
-            error: err
-        });
-    });
+//    app.use((err: Error, req: express.Request, res: express.Response, next) => {
+//        res.status(500);
+//        res.send({
+//            message: err.message,
+//            error: err
+//        });
+//    });
 //}
 
 // Connect to mongodb

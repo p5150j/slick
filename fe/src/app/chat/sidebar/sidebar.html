@@ -1,0 +1,14 @@
+<md-list ng-cloak>
+  <md-subheader class="md-no-sticky">Users</md-subheader>
+
+  <md-list-item ng-repeat="channel in vm.channels">
+    <!--<md-checkbox ng-model="chann.selected"></md-checkbox>-->
+    <md-icon md-svg-icon="cached"></md-icon>
+    <p>{{channel.name}}</p>
+    <md-icon class="md-secondary" ng-click="doSecondaryAction($event)" aria-label="Chat"
+             md-svg-icon="communication:message"></md-icon>
+  </md-list-item>
+
+  <md-divider></md-divider>
+</md-list>
+

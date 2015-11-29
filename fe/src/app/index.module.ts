@@ -16,6 +16,7 @@ module slick {
   'use strict';
 
   angular.module('slick', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria', 'ui.router', 'ngMaterial', 'toastr',
+    'slick.login',
     'slick.chat'
   ])
     .constant('moment', moment)
@@ -32,6 +33,7 @@ module slick {
 
   // load all other modules @TODO: refactor
   require('../app/chat/chat.module');
+  require('../app/login/login.module');
 
 }
 
