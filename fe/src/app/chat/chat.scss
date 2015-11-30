@@ -1,11 +1,21 @@
 .sl-chat{
 
+
   .left-panel {
     min-width: 250px;
     max-width: 250px;
     min-height: 100%;
+    ng-md-icon {
+      fill: grey;
+      &.online {
+        fill: green;
+      }
+      &.offline {
+        fill: red;
+      }
+    }
   }
   .right-panel {
-    background-color: #cccccc;
+    background-color: #5aadbb;
   }
 }

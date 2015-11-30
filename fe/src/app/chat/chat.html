@@ -2,31 +2,39 @@
 
   <div class="left-panel">
     <sl-sidebar></sl-sidebar>
-  </div>
-  <div flex="100" class="right-panel">
-
-    <div ng-show="vm.connected">
-      <md-input-container>
-        <label>Send a message</label>
-        <input type="text" ng-model="vm.currentMessage">
-      </md-input-container>
-      <md-button class="md-success" ng-click="vm.sendMessage()">Send</md-button>
-    </div>
-
-
-    <md-button ng-click="vm.get()">Get</md-button>
+    <label>Status {{vm.connected? 'Connected' : 'Offline'}}</label>
     <md-content>
-
+      <md-button ng-click="vm.get()">Test BE</md-button>
       {{vm.data}}
     </md-content>
+  </div>
+  <div flex class="right-panel" layout="column" layout-fill>
 
-    <div layout="horizontal"><h3>logMessages</h3>{{vm.logMessages}}</div>
-    <div layout="horizontal"><h3>participantMessages</h3>{{vm.participantMessages}}</div>
-    <div layout="horizontal"><h3>chatMessages</h3>{{vm.chatMessages}}</div>
-
+    <header>
+      <md-toolbar class='md-medium-tall'>
+        <div class="md-toolbar-tools">
+          <h1>Slick</h1>
+          <span flex></span>
+        </div>
+      </md-toolbar>
+    </header>
+    <main class='md-padding' layout="row" flex>
+      <div flex>
+        <md-card ng-repeat="msg in vm.chatMessages">
+          {{msg.username}}: {{msg.message}}
+        </md-card>
+      </div>
+    </main>
+    <footer>
+      <h2>Type here yo!</h2>
+      <div layout="row" layout-align="center center">
+        <md-input-container flex>
+          <input type="text" ng-model="vm.currentMessage" ng-keyup="$event.keyCode == 13 && vm.sendMessage()">
+        </md-input-container>
+      </div>
+    </footer>
 
   </div>
-
 
 </div>
 

@@ -20,8 +20,7 @@ export function routerConfig($stateProvider: angular.ui.IStateProvider, $urlRout
       controller: 'ChatController',
       controllerAs: 'vm'
     })
-
   ;
 
-  $urlRouterProvider.otherwise('/home');
+  $urlRouterProvider.otherwise('/login');
 }

@@ -4,6 +4,7 @@ import {ChatService} from "../chat/chat.service";
 export class LoginController {
 
   private user: UserData;
+  private errorMessage: string;
 
 
   /* @ngInject */
@@ -20,11 +21,12 @@ export class LoginController {
   }
 
   login() {
+    this.errorMessage = '';
     this.ChatService.login(this.user.username, this.user.password)
       .then((params) => {
         var identity = {
           token: params.token,
-          userId: params.userId,
+          userId: params._id,
           username: params.username,
           expirationDate: params.expirationDate
         };
@@ -32,6 +34,9 @@ export class LoginController {
         this.PrincipalService.setIdentity(identity);
 
         this.$state.go('chat');
+      })
+      .catch((response) => {
+        this.errorMessage = response.data.message || 'server error';
       });
   }
 }

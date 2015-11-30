@@ -5,8 +5,8 @@
     <!--<md-checkbox ng-model="chann.selected"></md-checkbox>-->
     <md-icon md-svg-icon="cached"></md-icon>
     <p>{{channel.name}}</p>
-    <md-icon class="md-secondary" ng-click="doSecondaryAction($event)" aria-label="Chat"
-             md-svg-icon="communication:message"></md-icon>
+    <!--<ng-md-icon icon="..." style="fill: ..." size="..."></ng-md-icon>-->
+    <ng-md-icon aria-label="Chat" icon="{{vm.getStatusIcon(channel)}}" ng-click="vm.morph(channel, $event)"></ng-md-icon>
   </md-list-item>
 
   <md-divider></md-divider>

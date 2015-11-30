@@ -1,4 +1,5 @@
 import {ChatService} from './chat.service';
+import {PrincipalService} from "../login/principal.service";
 
 
 export class ChatController {
@@ -15,7 +16,7 @@ export class ChatController {
   private socket: SocketIOClient.Socket;
 
   /* @ngInject */
-  constructor(private ChatService: ChatService, private toastr: any, MySocket: SocketIOClient.Socket) {
+  constructor(private ChatService: ChatService, private toastr: any, MySocket: SocketIOClient.Socket, private PrincipalService: PrincipalService) {
     this.socket = MySocket;
 
     this.logMessages = [];
@@ -31,7 +32,7 @@ export class ChatController {
   }
 
   login() {
-    this.socket.emit('add user', this.userName);
+    this.socket.emit('add user', this.PrincipalService.getUsername());
   }
 
 
@@ -44,7 +45,7 @@ export class ChatController {
     if (message && this.connected) {
       this.currentMessage = '';
       this.addChatMessage({
-        username: this.userName,
+        username: this.PrincipalService.getUsername(),
         message: message
       });
       // tell server to execute 'new message' and send along one parameter
@@ -61,13 +62,13 @@ export class ChatController {
   }
 
   addChatMessage(data:any) {
-    this.chatMessages.push(data.username + ': ' + data.message);
+    this.chatMessages.push(data);
   }
 
   activate(socket: SocketIOClient.Socket) {
 
 
-
+    this.login();
     // Socket events
 
     // Whenever the server emits 'login', log the login message

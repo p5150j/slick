@@ -1,15 +1,17 @@
 export class ChatService {
 
   /** @ngInject */
-  constructor(private $log: angular.ILogService, private $http: angular.IHttpService, private $q: angular.IQService, private apiUrl: string) {
+  constructor(private $log: angular.ILogService, private $http: angular.IHttpService, private $q: angular.IQService,
+              private apiUrl: string,
+              private authUrl: string) {
 
   }
 
   login(username: string, password: string): angular.IPromise<any> {
-    return this.$http.post(this.apiUrl + 'login',
-      {username: username, password: password})
+    return this.$http.post(this.authUrl + 'login',
+      {email: username, password: password})
       .then((response) => {
-       return response.data;
+        return response.data;
       });
   }
 
@@ -19,7 +21,7 @@ export class ChatService {
         return response.data;
       })
       .catch((error: any): any => {
-        this.$log.error('XHR Failed for getContributors.\n', error.data);
+        this.$log.error('Coulndt get data.\n', error.data);
       });
   }
 
@@ -33,16 +35,14 @@ export class ChatService {
         _id: 'abc1',
         name: 'Alejandro'
       },
-      {
-        _id: 'abc2',
-        name: 'Peter'
-      },
-      {
-        _id: 'abc3',
-        name: 'Pan'
-      }
+      //{
+      //  _id: 'abc2',
+      //  name: 'Peter'
+      //},
+      //{
+      //  _id: 'abc3',
+      //  name: 'Pan'
+      //}
     ]);
   }
-
-
 }
