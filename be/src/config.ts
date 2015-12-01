@@ -5,10 +5,10 @@ import path = require("path");
 import _ = require("lodash");
 
 class Config {
-	public static port : number = 3000;
-	public static routes = "routes/**/*.js";
+	public static port : number = 3002;
+	//public static routes = "routes/**/*.js";
 	public static models = "models/**/*.js";
-	public static dbname = "mongodb://localhost/express-typescript";
+	public static dbname = "mongodb://localhost:27017/express-typescript";
 
 	public static globFiles(location : string) : Array<string> {
 		var files = glob.sync(path.join(__dirname, location));

@@ -85,7 +85,7 @@ app.use(function(req: express.Request, res: express.Response, next: Function) {
 // Connect to mongodb
 mongoose.connect(config.dbname);
 
-var port: number = process.env.PORT || 3002,
+var port: number = process.env.PORT || config.port,
     http = require('http').createServer(app),
     io = socketio(http),
     socketHandler = new SocketHandler(io)

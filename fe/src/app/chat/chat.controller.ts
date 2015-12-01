@@ -31,11 +31,6 @@ export class ChatController {
     });
   }
 
-  login() {
-    this.socket.emit('add user', this.PrincipalService.getUsername());
-  }
-
-
   // Sends a chat message
   sendMessage() {
     var message = this.currentMessage;
@@ -63,6 +58,11 @@ export class ChatController {
 
   addChatMessage(data:any) {
     this.chatMessages.push(data);
+  }
+
+
+  login() {
+    this.socket.emit('login', this.PrincipalService.getToken());
   }
 
   activate(socket: SocketIOClient.Socket) {
