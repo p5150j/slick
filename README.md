@@ -42,6 +42,10 @@ $ cd be AND cd fe
 $ gulp
 ```
 
+## Seed users and rooms 
+
+hit `http://localhost:3002/setup` and your users and rooms will be erased and recreated.
+
 ## Tests 
 (Never run them.. this is a placeholder. I'll make some tests when code is stable)
 
