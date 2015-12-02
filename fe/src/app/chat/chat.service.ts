@@ -25,24 +25,13 @@ export class ChatService {
       });
   }
 
-  getChannels(): angular.IPromise<any[]> {
-    return this.$q.when([
-      {
-        _id: 'abc',
-        name: 'John'
-      },
-      {
-        _id: 'abc1',
-        name: 'Alejandro'
-      },
-      //{
-      //  _id: 'abc2',
-      //  name: 'Peter'
-      //},
-      //{
-      //  _id: 'abc3',
-      //  name: 'Pan'
-      //}
-    ]);
+  getInitialData(): angular.IPromise<any[]> {
+    return this.$http.get(this.apiUrl + 'init')
+      .then((response: any): any => {
+        return response.data;
+      })
+      .catch((error: any): any => {
+        this.$log.error('Coulndt get data.\n', error.data);
+      });
   }
 }

@@ -1,7 +1,7 @@
 <div layout="row" class="sl-chat" layout-fill>
 
   <div class="left-panel">
-    <sl-sidebar></sl-sidebar>
+    <sl-sidebar rooms="vm.rooms"></sl-sidebar>
     <label>Status {{vm.connected? 'Connected' : 'Offline'}}</label>
     <md-content>
       <md-button ng-click="vm.get()">Test BE</md-button>
@@ -21,7 +21,7 @@
     <main class='md-padding' layout="row" flex>
       <div flex>
         <md-card ng-repeat="msg in vm.chatMessages">
-          {{msg.username}}: {{msg.message}}
+          {{msg.user}}: {{msg.text}}
         </md-card>
       </div>
     </main>

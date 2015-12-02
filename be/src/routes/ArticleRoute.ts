@@ -13,6 +13,9 @@ export class ArticleRoute {
 
   public appendRoutes(router: express.Router): void {
 
+    router.route("/init")
+      .get(this.controller.init);
+
     router.route("/articles")
       .get(this.controller.list)
       .post(this.controller.create);

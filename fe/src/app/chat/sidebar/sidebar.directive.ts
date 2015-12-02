@@ -5,7 +5,7 @@ export function Sidebar(): angular.IDirective {
   return {
     restrict: 'E',
     scope: {
-      //creationDate: '='
+      rooms: '='
     },
     templateUrl: 'app/chat/sidebar/sidebar.html',
     controller: SlSidebarController,
@@ -21,9 +21,9 @@ export class SlSidebarController {
 
 
   constructor(private ChatService: ChatService) {
-    this.ChatService.getChannels().then((response: any[]) => {
-      this.channels = response;
-    })
+    //this.ChatService.getChannels().then((response: any[]) => {
+    //  this.channels = response;
+    //})
   }
 
   getStatusIcon(channel) {

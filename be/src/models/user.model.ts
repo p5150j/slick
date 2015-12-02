@@ -1,11 +1,21 @@
-"use strict";
 /// <reference path="../../typings/tsd.d.ts" />
+
+"use strict";
 
 import mongoose = require("mongoose");
 
+var SchemaName = 'User';
 
 var bcrypt = require('bcrypt')
   , salt_factor = 10;
+
+export interface IUser extends mongoose.Document {
+  role: String,
+  email: String,
+  password: String,
+  username: String,
+  token: String
+}
 
 
 var UserSchema: mongoose.Schema = new mongoose.Schema({
@@ -67,4 +77,4 @@ methods.authenticate = function (pass, next) {
   })
 });
 
-module.exports.Users = mongoose.model('User', UserSchema);
+export var UserRepository = mongoose.model<IUser>(SchemaName, UserSchema);

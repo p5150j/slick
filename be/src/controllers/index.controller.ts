@@ -3,12 +3,11 @@
 import express = require("express");
 
 class IndexController {
-	constructor() {
+
+  constructor() {
+
 	}
 
-	public static read(req : express.Request, res : express.Response, next : Function) : void {
-		res.send({ title: "Express" });
-	}
 }
 
 export = IndexController;

@@ -7,17 +7,18 @@ import BearerStrategy = require("passport-http-bearer");
 import express = require("express");
 import mongoose = require("mongoose");
 import {Strategy} from "passport-local";
+import {IUser, UserRepository} from "../models/user.model";
 
 "use strict";
 
 
 export class AuthenticationController {
 
-  private UserModel: mongoose.Model<mongoose.Document>;
+  private UserRepository: mongoose.Model<IUser>;
 
   constructor(app: express.Application) {
 
-    this.UserModel = mongoose.model('User');
+    this.UserRepository = UserRepository;
 
     app.use(passport.initialize());
 
@@ -52,7 +53,7 @@ export class AuthenticationController {
     });
 
     router.post('/users', (req, res) => {
-      var newUser = new this.UserModel(req.body);
+      var newUser = new this.UserRepository(req.body);
       newUser.save((err, user) => {
         if (err) {
           res.status(400).send(err);
@@ -61,7 +62,7 @@ export class AuthenticationController {
       })
     });
     router.put('/users/:id', (req: express.Request, res) => {
-      this.UserModel.findById(req.params.id, (err, user) => {
+      this.UserRepository.findById(req.params.id, (err, user) => {
         if (err) {
           res.status(400).send(err);
         }
@@ -77,7 +78,7 @@ export class AuthenticationController {
     });
 
     router.get('/users', (req, res) => {
-      this.UserModel.find((err, users)=> {
+      this.UserRepository.find((err, users)=> {
         res.send(users);
       });
     });
@@ -109,7 +110,7 @@ export class AuthenticationController {
         passwordField: 'password'
       },
       (username, password, done) => {
-        this.UserModel.findOne({username: username}, (err, user: any) => {
+        this.UserRepository.findOne({username: username}, (err, user: any) => {
           if (err) {
             return done(err);
           }
@@ -137,7 +138,7 @@ export class AuthenticationController {
 
   protected getAccessTokenStrategy(): BearerStrategy.Strategy {
     return new BearerStrategy.Strategy((token, done) => {
-        this.UserModel.findOne({token: token}, function (err, user) {
+        this.UserRepository.findOne({token: token}, function (err, user) {
           if (err) {
             return done(err);
           }

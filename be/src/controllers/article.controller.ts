@@ -1,16 +1,40 @@
-"use strict";
 /// <reference path="../../typings/tsd.d.ts" />
+
+"use strict";
 import express = require("express");
 import mongoose = require("mongoose");
+import {IRoom, RoomRepository} from "../models/room.model";
+import {IMessage, MessageRepository} from "../models/message.model";
+import {IUser, UserRepository} from "../models/user.model";
 
 
 export class ArticleController {
 
   private Article: mongoose.Model<mongoose.Document>;
+  private MessageRepository: mongoose.Model<IMessage>;
+  private RoomRepository: mongoose.Model<IRoom>;
+  private UserRepository: mongoose.Model<IUser>;
+
 
   constructor() {
     this.Article = mongoose.model("Article");
+    this.MessageRepository = MessageRepository;
+    this.RoomRepository = RoomRepository;
+    this.UserRepository = UserRepository;
+  }
 
+  public init = (req: express.Request, res: express.Response) => {
+    let data = {rooms: null, users: null};
+    this.RoomRepository.find({}).exec()
+      .then((rooms)=> {
+        data.rooms = rooms;
+        this.UserRepository.find({}).exec().then((users)=> {
+          data.users = users;
+          res.json(data);
+        }, (err) => {
+          res.status(400).json({message: err})
+        })
+      })
   }
 
   public list = (req: express.Request, res: express.Response): void => {

@@ -9,6 +9,8 @@ export class ChatController {
   public participantMessages: string[];
   public chatMessages: string[];
 
+  public users: Array;
+  public rooms: Array;
   public userName: string;
   public connected: boolean;
   public currentMessage: string;
@@ -22,11 +24,13 @@ export class ChatController {
     this.logMessages = [];
     this.participantMessages = [];
     this.chatMessages = [];
+    this.users = [];
+    this.rooms = [];
     this.activate(this.socket);
   }
 
   get() {
-    this.ChatService.getArticles().then( (d: any) => {
+    this.ChatService.getArticles().then((d: any) => {
       this.data = d;
     });
   }
@@ -39,24 +43,27 @@ export class ChatController {
     // if there is a non-empty message and a socket connection
     if (message && this.connected) {
       this.currentMessage = '';
-      this.addChatMessage({
-        username: this.PrincipalService.getUsername(),
-        message: message
-      });
+      var socketData = {
+        room: this.rooms[0]._id,
+        user: this.PrincipalService.getUsername(),
+        text: message
+      };
+      this.addChatMessage(socketData);
+
       // tell server to execute 'new message' and send along one parameter
-      this.socket.emit('new message', message);
+      this.socket.emit('new message', socketData);
     }
   }
 
-  log(message:string, options?) {
+  log(message: string, options?) {
     this.logMessages.push(message);
   }
 
-  addParticipantsMessage(message:string) {
+  addParticipantsMessage(message: string) {
     this.participantMessages.push(message);
   }
 
-  addChatMessage(data:any) {
+  addChatMessage(data: any) {
     this.chatMessages.push(data);
   }
 
@@ -67,6 +74,10 @@ export class ChatController {
 
   activate(socket: SocketIOClient.Socket) {
 
+    this.ChatService.getInitialData().then((data: any)=> {
+      this.users = data.users;
+      this.rooms = data.rooms;
+    });
 
     this.login();
     // Socket events
