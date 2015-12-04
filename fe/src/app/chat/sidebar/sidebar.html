@@ -1,7 +1,7 @@
 <md-list ng-cloak>
   <md-subheader class="md-no-sticky">Users</md-subheader>
 
-  <md-list-item ng-repeat="room in vm.rooms">
+  <md-list-item ng-repeat="room in vm.slRooms" ng-click="vm.onRoomSelected(room)">
     <!--<md-checkbox ng-model="chann.selected"></md-checkbox>-->
     <md-icon md-svg-icon="cached"></md-icon>
     <p>{{room.name}}</p>

@@ -1,38 +1,18 @@
 <div layout="row" class="sl-chat" layout-fill>
 
   <div class="left-panel">
-    <sl-sidebar rooms="vm.rooms"></sl-sidebar>
+    <sl-sidebar sl-rooms="vm.rooms" sl-on-room-selected="vm.onRoomSelected(room)"></sl-sidebar>
     <label>Status {{vm.connected? 'Connected' : 'Offline'}}</label>
     <md-content>
       <md-button ng-click="vm.get()">Test BE</md-button>
-      {{vm.data}}
+      {{vm.myArticles}}
     </md-content>
   </div>
   <div flex class="right-panel" layout="column" layout-fill>
 
-    <header>
-      <md-toolbar class='md-medium-tall'>
-        <div class="md-toolbar-tools">
-          <h1>Slick</h1>
-          <span flex></span>
-        </div>
-      </md-toolbar>
-    </header>
-    <main class='md-padding' layout="row" flex>
-      <div flex>
-        <md-card ng-repeat="msg in vm.chatMessages">
-          {{msg.user}}: {{msg.text}}
-        </md-card>
-      </div>
-    </main>
-    <footer>
-      <h2>Type here yo!</h2>
-      <div layout="row" layout-align="center center">
-        <md-input-container flex>
-          <input type="text" ng-model="vm.currentMessage" ng-keyup="$event.keyCode == 13 && vm.sendMessage()">
-        </md-input-container>
-      </div>
-    </footer>
+    <sl-room sl-room="vm.currentRoom">
+
+    </sl-room>
 
   </div>
 

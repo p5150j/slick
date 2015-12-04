@@ -6,7 +6,7 @@ import mongoose = require("mongoose");
 import {IRoom, RoomRepository} from "../models/room.model";
 import {IMessage, MessageRepository} from "../models/message.model";
 import {IUser, UserRepository} from "../models/user.model";
-
+var _ = require('lodash');
 
 export class ArticleController {
 
@@ -24,18 +24,46 @@ export class ArticleController {
   }
 
   public init = (req: express.Request, res: express.Response) => {
-    let data = {rooms: null, users: null};
-    this.RoomRepository.find({}).exec()
+    var myRooms, myUsers;
+
+    this.RoomRepository.find({}).lean().exec()
       .then((rooms)=> {
-        data.rooms = rooms;
-        this.UserRepository.find({}).exec().then((users)=> {
-          data.users = users;
-          res.json(data);
+        myRooms = rooms;
+        let roomIds = _.pluck(rooms, '_id');
+        console.log('aa')
+        //return roomIds;
+        //
+        return this.MessageRepository.aggregate([
+          {
+            $match: {room: {$in: roomIds}}
+          },
+          {
+            $group: {
+              _id: '$room',
+              messages: {$push: {_id: '$id', text: '$text', ts: '$ts', user: '$user'}}
+            }
+          }
+        ]).exec()
+      })
+      .then((messages) => {
+        var ixMessages = _.indexBy(messages, '_id');
+        myRooms.forEach((room, index, array)=> {
+          array[index].messages = ixMessages[room._id]? ixMessages[room._id].messages: [];
+          console.log('aaaaaa', array[index].messages)
+        });
+
+        this.UserRepository.find({}).lean().exec().then((users)=> {
+
+          res.json({
+            users: users,
+            rooms: myRooms
+          });
+          console.log('aa')
         }, (err) => {
           res.status(400).json({message: err})
         })
       })
-  }
+  };
 
   public list = (req: express.Request, res: express.Response): void => {
     this.Article.find((err: Error, articles: Array<mongoose.Document>) => {

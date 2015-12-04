@@ -1,12 +1,10 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-"use strict";
-
-
+import {Message} from "../shared/api-models";
 import mongoose = require("mongoose");
-
 import {IMessage, MessageRepository} from "../models/message.model";
 import {IRoom, RoomRepository} from "../models/room.model";
+
 var _ = require('lodash');
 
 export class SocketClients {
@@ -24,10 +22,10 @@ export class SocketClients {
 
   private sendMessageToRoom(room: string, messageTag: string, data: {}) {
     //This goes into redis?
-    this.RoomRepository.findById(room, 'users', {})
+    return this.RoomRepository.findById(room, 'users', {}).lean()
       .exec().then((user: IRoom) => {
       if (!user.users) {
-
+        console.error('not user found to send message');
         return; //error @TODO handle
       }
 
@@ -40,16 +38,9 @@ export class SocketClients {
   }
 
 
-  newMessage(newMessage: IMessage) {
+  newMessage(newMessage: Message) {
 
-    // we tell the client to execute 'new message'
-    console.log(newMessage.text);
-
-    var clientData = {
-      user: newMessage.user,
-      message: newMessage.text
-    };
-    return this.sendMessageToRoom(newMessage.room, 'new message', clientData);
+    return this.sendMessageToRoom(newMessage.room, 'new message', newMessage);
   }
 
   confirmLogin(user:string): void {
@@ -68,6 +59,7 @@ export class SocketClients {
   }
 
   private getSocketRedis(user){
+
     return _.find(this.io.sockets.connected, {userId: user});
   }
 
