@@ -1,9 +1,7 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-"use strict";
-
-//export module controllers {
-
+import {Promise} from "mongoose";
+import {Message} from "../shared/api-models";
 import { IMessage, MessageRepository } from '../models/message.model'
 import { IUser, UserRepository } from '../models/user.model'
 
@@ -23,10 +21,10 @@ export class SocketController {
   }
 
 
-  newMessage(newMessage: IMessage) {
+  newMessage(newMessage: Message): Promise<any> {
 
-    console.log(newMessage)
-    this.MessageRepository.create(newMessage)
+    console.log(newMessage);
+    return this.MessageRepository.create(newMessage)
       .then(()=> {
         this.socketClients.newMessage(newMessage);
       });
@@ -38,30 +36,33 @@ export class SocketController {
   }
 
 
-  login(accessToken: string, socket: SocketIO.Socket): void {
-    this.UserRepository.findOne({token: accessToken}, (err, user) => {
+  login(accessToken: string, socket: SocketIO.Socket): Promise<any> {
+    return this.UserRepository.findOne({token: accessToken}, (err, user) => {
       if (err || !user) {
         return socket.disconnect(true);
       }
 
+      console.log(user);
+      var userId: string = <string>user._id;
 
-      socket['userId'] = user.id;
-      console.log('logged into socket', socket);
+      socket['userId'] = userId;
+      console.log('logged into socket');
 
-      this.socketClients.confirmLogin(user.id);
-      this.socketClients.broadcastUserStatusChanged(user.id, true);
+      this.socketClients.confirmLogin(userId);
+      this.socketClients.broadcastUserStatusChanged(userId, true);
 
-    });
+    }).lean().exec();
   }
 
 
-  logout(userId: string): void {
+  logout(userId: string): Promise<any> {
     // remove the username from global usernames list
     //  delete usernames[socket.username];
     //  --numUsers;
 
     // echo globally that this client has left
     this.socketClients.broadcastUserStatusChanged(userId, true);
+
+    return new Promise().resolve(null, true);
   }
 }
-//}

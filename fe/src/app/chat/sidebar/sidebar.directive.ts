@@ -4,13 +4,14 @@ export function Sidebar(): angular.IDirective {
 
   return {
     restrict: 'E',
-    scope: {
-      rooms: '='
-    },
     templateUrl: 'app/chat/sidebar/sidebar.html',
     controller: SlSidebarController,
     controllerAs: 'vm',
-    bindToController: true
+    scope: true,
+    bindToController: {
+      slRooms: '=',
+      slOnRoomSelected: '&'
+    }
   };
 
 }
@@ -24,6 +25,10 @@ export class SlSidebarController {
     //this.ChatService.getChannels().then((response: any[]) => {
     //  this.channels = response;
     //})
+  }
+
+  onRoomSelected(room) {
+    this['slOnRoomSelected']({room: room});
   }
 
   getStatusIcon(channel) {

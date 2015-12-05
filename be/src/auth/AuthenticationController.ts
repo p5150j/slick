@@ -1,15 +1,16 @@
 /// <reference path="../../typings/tsd.d.ts" />
+"use strict";
+
+
 import passport = require('passport');
 
 import LocalStrategy = require("passport-local");
-import BearerStrategy = require("passport-http-bearer");
+var BearerStrategy:any = require("passport-http-bearer"); //var because we don't have the typings
 
 import express = require("express");
 import mongoose = require("mongoose");
 import {Strategy} from "passport-local";
 import {IUser, UserRepository} from "../models/user.model";
-
-"use strict";
 
 
 export class AuthenticationController {
@@ -136,7 +137,7 @@ export class AuthenticationController {
       });
   }
 
-  protected getAccessTokenStrategy(): BearerStrategy.Strategy {
+  protected getAccessTokenStrategy(): Strategy {
     return new BearerStrategy.Strategy((token, done) => {
         this.UserRepository.findOne({token: token}, function (err, user) {
           if (err) {

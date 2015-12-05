@@ -1,0 +1,22 @@
+<header>
+  <md-toolbar class='md-medium-tall'>
+    <div class="md-toolbar-tools">
+      <h1>Slick</h1>
+      <span flex></span>
+    </div>
+  </md-toolbar>
+</header>
+<h3>{{vm.slRoom.name}}</h3>
+<main class='md-padding' layout="row" flex>
+  <sl-messages sl-messages="vm.slRoom.messages"></sl-messages>
+</main>
+
+<footer>
+  <h2>Type here yo!</h2>
+
+  <div layout="row" layout-align="center center">
+    <md-input-container flex>
+      <input type="text" ng-model="vm.currentMessage" ng-keyup="$event.keyCode == 13 && vm.sendMessage()">
+    </md-input-container>
+  </div>
+</footer>

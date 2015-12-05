@@ -4,55 +4,31 @@ import {PrincipalService} from "../login/principal.service";
 
 export class ChatController {
 
-  public data: any[];
+  public myArticles: any[];
   public logMessages: string[];
-  public participantMessages: string[];
   public chatMessages: string[];
 
-  public users: Array;
-  public rooms: Array;
-  public userName: string;
+  public users: any[];
+  public rooms: any[];
+  public currentRoom: any; //room object
   public connected: boolean;
-  public currentMessage: string;
 
-  private socket: SocketIOClient.Socket;
+  private MySocket: SocketIOClient.Socket;
 
   /* @ngInject */
   constructor(private ChatService: ChatService, private toastr: any, MySocket: SocketIOClient.Socket, private PrincipalService: PrincipalService) {
-    this.socket = MySocket;
+    this.MySocket = MySocket;
 
     this.logMessages = [];
-    this.participantMessages = [];
-    this.chatMessages = [];
     this.users = [];
     this.rooms = [];
-    this.activate(this.socket);
+    this.activate(this.MySocket);
   }
 
   get() {
     this.ChatService.getArticles().then((d: any) => {
-      this.data = d;
+      this.myArticles = d;
     });
-  }
-
-  // Sends a chat message
-  sendMessage() {
-    var message = this.currentMessage;
-    // Prevent markup from being injected into the message
-    //message = cleanInput(message);
-    // if there is a non-empty message and a socket connection
-    if (message && this.connected) {
-      this.currentMessage = '';
-      var socketData = {
-        room: this.rooms[0]._id,
-        user: this.PrincipalService.getUsername(),
-        text: message
-      };
-      this.addChatMessage(socketData);
-
-      // tell server to execute 'new message' and send along one parameter
-      this.socket.emit('new message', socketData);
-    }
   }
 
   log(message: string, options?) {
@@ -60,16 +36,23 @@ export class ChatController {
   }
 
   addParticipantsMessage(message: string) {
-    this.participantMessages.push(message);
+    console.log('wtf is this ' + message);
+    //this.participantMessages.push(message);
   }
 
   addChatMessage(data: any) {
-    this.chatMessages.push(data);
+    this.currentRoom.messages.push(data);
   }
 
 
   login() {
-    this.socket.emit('login', this.PrincipalService.getToken());
+    this.MySocket.emit('login', this.PrincipalService.getToken());
+  }
+
+  onRoomSelected(room: any){
+    this.currentRoom = room;
+    this.currentRoom.messages = this.currentRoom.messages || [];
+    this.log('room selected');
   }
 
   activate(socket: SocketIOClient.Socket) {
@@ -77,6 +60,7 @@ export class ChatController {
     this.ChatService.getInitialData().then((data: any)=> {
       this.users = data.users;
       this.rooms = data.rooms;
+      this.onRoomSelected(this.rooms[0]);
     });
 
     this.login();
@@ -86,10 +70,7 @@ export class ChatController {
     socket.on('login', (data) => {
       this.connected = true;
       // Display the welcome message
-      var message = "Welcome to Socket.IO Chat – ";
-      this.log(message, {
-        prepend: true
-      });
+      this.log("Welcome to Socket.IO Chat – ");
       this.addParticipantsMessage(data);
     });
 
@@ -119,6 +100,9 @@ export class ChatController {
     // Whenever the server emits 'stop typing', kill the typing message
     socket.on('stop typing', (data) => {
       //removeChatTyping(data);
+    });
+    socket.on('model error', (data) => {
+      console.error(data);
     });
   }
 

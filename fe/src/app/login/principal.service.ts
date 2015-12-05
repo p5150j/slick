@@ -11,7 +11,7 @@ export class PrincipalService {
 
     try {
       this.identity = JSON.parse(localStorage.getItem(PrincipalService.IDENTITY_KEY)) || {};
-    }catch (e:SyntaxError){
+    }catch (e){
       this.identity = {};
     }
     this.identity.expirationDate = Date.parse(this.identity.expirationDate);

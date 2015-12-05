@@ -62,3 +62,4 @@ $  [sudo] npm install -g karma-cli
 ```shell
 $  [sudo] npm install -g phantomjs
 ```
+
