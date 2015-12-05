@@ -21,8 +21,7 @@ export class SlMessagesController {
 
   private slMessages: Message[];
 
-  constructor() {
-  }
+  constructor() {}
 
 
 }

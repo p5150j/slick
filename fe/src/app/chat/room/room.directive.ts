@@ -27,9 +27,22 @@ export class SlRoomController {
   public currentMessage: string;
   public slRoom: Room; //room
 
-  constructor(private ChatSocketService: ChatSocketService) {
-  }
+  constructor(private ChatSocketService: ChatSocketService,
+              private $scope: angular.IScope,
+              private $element: angular.IRootElementService,
+              private $timeout: angular.ITimeoutService
 
+  ) {
+    //this.slRoom.usersObj
+
+
+    this.$scope.$watch('vm.slRoom.messages.length', (newVal) =>{
+      let $element = this.$element.find('main');
+      this.$timeout(() => {
+        $element[0].scrollTop = $element[0].scrollHeight;
+      });
+    });
+  }
 
 
   // Sends a chat message
@@ -52,7 +65,4 @@ export class SlRoomController {
 
     }
   }
-
-
-
 }

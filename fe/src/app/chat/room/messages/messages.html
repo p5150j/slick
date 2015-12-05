@@ -1,6 +1,10 @@
   <div flex >
-    <md-card ng-repeat="msg in vm.slMessages">
-      {{msg.user}}: {{msg.text}}
+    <md-card ng-repeat="msg in vm.slMessages" class="anim-fade">
+
+      <p>{{msg.userObj.username}} <sm>sent on: {{msg.date}}</sm></p>
+      {{msg.text}}
     </md-card>
+
+    <!--<p ng-if="vm.sentMessage" class="anim-fade pending-message">{{vm.pendingMessage.text}}</p>-->
   </div>
 

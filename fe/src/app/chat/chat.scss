@@ -16,6 +16,19 @@
     }
   }
   .right-panel {
+    height: auto;
+    overflow: auto;
     background-color: #5aadbb;
+
+
+    main {
+      overflow-y: scroll;
+    }
+
+    sl-messages {
+      .pending-message {
+        color: grey;
+      }
+    }
   }
 }

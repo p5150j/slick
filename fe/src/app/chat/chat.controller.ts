@@ -1,12 +1,12 @@
 import {ChatService} from './chat.service';
 import {PrincipalService} from "../login/principal.service";
+import {Message} from "../../../../be/src/shared/api-models";
 
 
 export class ChatController {
 
   public myArticles: any[];
   public logMessages: string[];
-  public chatMessages: string[];
 
   public users: any[];
   public rooms: any[];
@@ -25,46 +25,13 @@ export class ChatController {
     this.activate(this.MySocket);
   }
 
-  get() {
-    this.ChatService.getArticles().then((d: any) => {
-      this.myArticles = d;
-    });
-  }
-
-  log(message: string, options?) {
-    this.logMessages.push(message);
-  }
-
-  addParticipantsMessage(message: string) {
-    console.log('wtf is this ' + message);
-    //this.participantMessages.push(message);
-  }
-
-  addChatMessage(data: any) {
-    this.currentRoom.messages.push(data);
-  }
-
-
-  login() {
-    this.MySocket.emit('login', this.PrincipalService.getToken());
-  }
-
-  onRoomSelected(room: any){
-    this.currentRoom = room;
-    this.currentRoom.messages = this.currentRoom.messages || [];
-    this.log('room selected');
-  }
-
   activate(socket: SocketIOClient.Socket) {
 
     this.ChatService.getInitialData().then((data: any)=> {
       this.users = data.users;
       this.rooms = data.rooms;
-      this.onRoomSelected(this.rooms[0]);
+      this.onRoomSelected(this.rooms[Object.keys(this.rooms)[0]]); //first room
     });
-
-    this.login();
-    // Socket events
 
     // Whenever the server emits 'login', log the login message
     socket.on('login', (data) => {
@@ -74,8 +41,11 @@ export class ChatController {
       this.addParticipantsMessage(data);
     });
 
-    // Whenever the server emits 'new message', update the chat body
-    socket.on('new message', (data) => {
+    socket.on('disconnected', () => {
+      this.connected = false;
+    });
+      // Whenever the server emits 'new message', update the chat body
+    socket.on('new message', (data: Message) => {
       this.addChatMessage(data);
     });
 
@@ -104,6 +74,46 @@ export class ChatController {
     socket.on('model error', (data) => {
       console.error(data);
     });
+  }
+
+
+  addChatMessage(data: Message) {
+    this.ChatService.prepareMessage(data);
+    if(this.rooms[data.room]){
+      var room = this.rooms[data.room];
+      if(room == this.currentRoom){
+        //animate?
+      }else {
+        //add some pending message somewhere
+      }
+      room.messages.push(data);
+    }else {
+      console.log('Create new room!!!');
+    }
+
+  }
+
+  onRoomSelected(room: any){
+    this.currentRoom = room;
+    this.currentRoom.messages = this.currentRoom.messages || [];
+    this.ChatService.prepareRoom(this.currentRoom);
+    this.log('room selected');
+  }
+
+
+  get() {
+    this.ChatService.getArticles().then((d: any) => {
+      this.myArticles = d;
+    });
+  }
+
+  log(message: string, options?) {
+    this.logMessages.push(message);
+  }
+
+  addParticipantsMessage(message: string) {
+    console.log('wtf is this ' + message);
+    //this.participantMessages.push(message);
   }
 
 }

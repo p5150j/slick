@@ -22,6 +22,7 @@ export class SocketClients {
 
   private sendMessageToRoom(room: string, messageTag: string, data: {}) {
     //This goes into redis?
+    //@TODO - this shouldn't decide to which users-- must receive a list of users.. and see if they are connected
     return this.RoomRepository.findById(room, 'users', {}).lean()
       .exec().then((user: IRoom) => {
       if (!user.users) {

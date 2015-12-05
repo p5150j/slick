@@ -52,7 +52,7 @@ export class ArticleController {
           console.log('aaaaaa', array[index].messages)
         });
 
-        this.UserRepository.find({}).lean().exec().then((users)=> {
+        this.UserRepository.find({}, 'username role').lean().exec().then((users)=> {
 
           res.json({
             users: users,

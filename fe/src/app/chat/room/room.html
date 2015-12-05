@@ -1,14 +1,14 @@
 <header>
-  <md-toolbar class='md-medium-tall'>
+  <md-toolbar>
     <div class="md-toolbar-tools">
-      <h1>Slick</h1>
+      <h3>Slick- {{vm.slRoom.name}}</h3>
       <span flex></span>
     </div>
   </md-toolbar>
+  <span>this room has {{vm.slRoom.users.length}} users - in slRoom.usersObj you have the names! </span>
 </header>
-<h3>{{vm.slRoom.name}}</h3>
 <main class='md-padding' layout="row" flex>
-  <sl-messages sl-messages="vm.slRoom.messages"></sl-messages>
+  <sl-messages flex="100" sl-messages="vm.slRoom.messages"></sl-messages>
 </main>
 
 <footer>

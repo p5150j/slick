@@ -4,6 +4,7 @@ import {Promise} from "mongoose";
 import {Message} from "../shared/api-models";
 import { IMessage, MessageRepository } from '../models/message.model'
 import { IUser, UserRepository } from '../models/user.model'
+import {IRoom, RoomRepository} from "../models/room.model";
 
 import {SocketClients} from "../util/socket-clients";
 
@@ -14,25 +15,35 @@ export class SocketController {
 
   private MessageRepository: mongoose.Model<IMessage>;
   private UserRepository: mongoose.Model<IUser>;
+  private RoomRepository: mongoose.Model<IRoom>;
 
   constructor(private socketClients: SocketClients) {
     this.MessageRepository = MessageRepository;
     this.UserRepository = UserRepository;
+    this.RoomRepository = RoomRepository;
   }
 
 
   newMessage(newMessage: Message): Promise<any> {
 
     console.log(newMessage);
-    return this.MessageRepository.create(newMessage)
-      .then(()=> {
-        this.socketClients.newMessage(newMessage);
+    return this.RoomRepository.find( {_id: newMessage.room, users: newMessage.user }, '_id').lean().exec().then(
+      (roomResults)=> {
+
+        if(!roomResults.length){
+          return new mongoose.Promise().reject('not valid room');
+        }
+
+        return this.MessageRepository.create(newMessage)
+          .then((savedMessage: IMessage)=> {
+            console.log('message saved');
+            newMessage._id = savedMessage.id;
+            newMessage.ts = <string>savedMessage.ts;
+
+            this.socketClients.newMessage(newMessage);
+          });
       });
 
-    //socket.broadcast.emit('new message', {
-    //  username: socket['userId'],
-    //  message: data
-    //});
   }
 
 
