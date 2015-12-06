@@ -1,10 +1,35 @@
-  <div flex >
-    <md-card ng-repeat="msg in vm.slMessages" class="anim-fade">
+<div flex >
+	<md-card>
+	   <md-card-content>
+	      <div class="chat">
+	         <div class="chat-history animated " ng-repeat="msg in vm.slMessages">
+	            <div class="chat-message clearfix">
+	               <img src="http://lorempixum.com/32/32/people" alt="" width="32" height="32">
+	               <div class="chat-message-content clearfix">
+	                  <span class="chat-time">
+	                    sent on: {{msg.date}}
+	                     
+	                  </span>
+	                  <h5>J{{msg.userObj.username}}</h5>
+	                  <p> {{msg.text}}</p>
+	               </div>
+	               <!-- end chat-message-content -->
+	            </div>
+	            <hr>
+	         </div>
+	      <!-- end chat -->
+	   </md-card-content>
+	</md-card>
+	    <!--<p ng-if="vm.sentMessage" class="anim-fade pending-message">{{vm.pendingMessage.text}}</p>-->
+</div>
+<link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
 
-      <p>{{msg.userObj.username}} <sm>sent on: {{msg.date}}</sm></p>
-      {{msg.text}}
-    </md-card>
 
-    <!--<p ng-if="vm.sentMessage" class="anim-fade pending-message">{{vm.pendingMessage.text}}</p>-->
-  </div>
+
+
+
+
+
+
+
 
