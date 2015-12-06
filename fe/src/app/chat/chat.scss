@@ -2,9 +2,12 @@
 
 
   .left-panel {
+    font-size: 11px;
+    background: #3A4141;
     min-width: 250px;
     max-width: 250px;
     min-height: 100%;
+    color: #eee;
     ng-md-icon {
       fill: grey;
       &.online {
@@ -33,8 +36,19 @@
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
 body{
-    font-family: 'Droid Sans', sans-serif!important;
+font-family: 'Raleway', sans-serifimportant;
   }
   video{
          float: left;

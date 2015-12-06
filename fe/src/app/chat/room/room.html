@@ -1,4 +1,4 @@
-<header>
+<!-- <header>
   <md-toolbar>
     <div class="md-toolbar-tools">
       <h3>Slick- {{vm.slRoom.name}}</h3>
@@ -6,18 +6,35 @@
     </div>
   </md-toolbar>
   <span>this room has {{vm.slRoom.users.length}} users - in slRoom.usersObj you have the names! </span>
-</header>
+</header> -->
+ <md-toolbar>
+      <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" aria-label="Settings">
+          <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
+        </md-button>
+        <h2>
+          <span>Slick- {{vm.slRoom.name}}</span><small>this room has {{vm.slRoom.users.length}} users - in slRoom.usersObj you have the names!</small>
+        </h2>
+        <span flex></span>
+        <md-button class="md-icon-button" aria-label="Favorite">
+          <md-icon md-svg-icon="img/icons/favorite.svg" style="color: greenyellow;"></md-icon>
+        </md-button>
+        <md-button class="md-icon-button" aria-label="More">
+          <md-icon md-svg-icon="img/icons/more_vert.svg"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
 <main class='md-padding' layout="row" flex>
   <sl-messages flex="100" sl-messages="vm.slRoom.messages"></sl-messages>
 </main>
 
 <footer>
   
-<div flex >
-    <md-card>
+
+    <md-card style="">
     <md-input-container>
       <input type="text" ng-model="vm.currentMessage" ng-keyup="$event.keyCode == 13 && vm.sendMessage()" placeholder="Type your message.." autofocus>
     </md-input-container>
       </md-card>
-  </div>
+
 </footer>
