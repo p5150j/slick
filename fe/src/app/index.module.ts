@@ -19,7 +19,8 @@ module slick {
   angular.module('slick', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria', 'ui.router',
     'ngMaterial', 'ngMdIcons', 'toastr',
     'slick.login',
-    'slick.chat'
+    'slick.chat',
+    'kcd.directives'
   ])
     .constant('moment', moment)
     .constant('apiUrl', apiUrl)
@@ -38,6 +39,7 @@ module slick {
   // load all other modules @TODO: refactor
   require('../app/chat/chat.module');
   require('../app/login/login.module');
+  require('../app/components/util/kcd-recompile.directive');
 
 }
 

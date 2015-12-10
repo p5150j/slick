@@ -52,6 +52,9 @@ export class PrincipalService {
   getToken() {
     return this.identity ? this.identity.token : '';
   }
+  getUserId() {
+    return this.identity ? this.identity.userId : '';
+  }
 
   getIdentity() {
     return this.identity;

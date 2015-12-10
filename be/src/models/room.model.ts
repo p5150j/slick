@@ -5,21 +5,25 @@ import {IUser} from "./user.model";
 
 import mongoose = require("mongoose");
 import {Schema} from "mongoose";
+import {ROOM_TYPES} from '../shared/api-models'
 
 var SchemaName = 'Room';
+
 
 export interface IRoom extends mongoose.Document {
   name: string;
   desc: string;
   users: string[];
+  type: ROOM_TYPES
   ts: Date
 }
+
 
 export var RoomSchema: mongoose.Schema = new mongoose.Schema({
   users: [{type: Schema.Types.ObjectId, ref: 'User', required: true}],
   name: {type: String, required: true},
   desc: {type: String},
-  type: {type: String, enum: ['IM', 'GIM'], uppercase: true}, //im, group im
+  type: {type: String, enum: [ROOM_TYPES.IM, ROOM_TYPES.GIM], uppercase: true, required: true}, //im, group im
   ts: {type: Date, default: Date.now, required: true}
 });
 

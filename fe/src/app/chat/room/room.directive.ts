@@ -10,15 +10,31 @@ export function Room(): angular.IDirective {
 
   return {
     restrict: 'E',
-    scope: true,
+    scope: {},
     templateUrl: 'app/chat/room/room.html',
     controller: SlRoomController,
     controllerAs: 'vm',
     bindToController: {
       slRoom: '='
-    }
+    },
+    link: linkFunction
+
   };
 
+
+
+  function linkFunction(scope, element, attrs, controller){
+
+    element.on("$destroy", function () {
+      scope.$destroy();
+    });
+    scope.$watch('vm.slRoom.messages.length', (newVal) =>{
+      let $element = element.find('main');
+      controller.$timeout(() => {
+        $element[0].scrollTop = $element[0].scrollHeight;
+      });
+    });
+  }
 }
 
 /** @ngInject */
@@ -28,20 +44,11 @@ export class SlRoomController {
   public slRoom: Room; //room
 
   constructor(private ChatSocketService: ChatSocketService,
-              private $scope: angular.IScope,
-              private $element: angular.IRootElementService,
-              private $timeout: angular.ITimeoutService
+              public $timeout: angular.ITimeoutService
 
   ) {
     //this.slRoom.usersObj
 
-
-    this.$scope.$watch('vm.slRoom.messages.length', (newVal) =>{
-      let $element = this.$element.find('main');
-      this.$timeout(() => {
-        $element[0].scrollTop = $element[0].scrollHeight;
-      });
-    });
   }
 
 

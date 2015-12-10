@@ -19,10 +19,12 @@ import {AuthenticationController}  from './auth/AuthenticationController';
 //import users = require('./routes/users');
 
 import {SocketRoute} from './routes/socket.route';
-import {ArticleRoute} from "./routes/ArticleRoute";
+import {ChatRoute} from "./routes/chat.route";
 import {IndexRoute} from "./routes/index";
 import {SocketClients} from "./util/socket-clients";
 import {SocketController} from "./controllers/socket.controller";
+import {ChatRoute} from "./routes/chat.route";
+import {ValidationError} from "./models/validation.error";
 
 
 var app: express.Express = express();
@@ -47,7 +49,7 @@ new AuthenticationController(app)
   .appendRoutes(authRouter)
   .protectRoutes(apiRouter);
 
-new ArticleRoute().appendRoutes(apiRouter);
+new ChatRoute().appendRoutes(apiRouter);
 
 
 // middleware specific to this router
@@ -70,13 +72,20 @@ app.use('/', authRouter);
 
 // production error handler
 // no stacktraces leaked to user
-//app.use((err: any, req: express.Request, res: express.Response, next) => {
-//    res.status(err.status || 500);
-//    res.send({
-//        message: err.message,
-//        error: {}
-//    });
-//});
+app.use((err: any, req: express.Request, res: express.Response, next) => {
+  //logger.error(err);
+  res.status(err.status || 500);
+  if (err instanceof ValidationError) {
+    console.error('Validation error', err);
+    //return res.json(err.message);
+    return res.json(err);
+  }
+
+  res.json({
+    message: err.message,
+    error: err //{}
+  });
+});
 
 //if (app.get("env") === "development") {
 //    app.use((err: Error, req: express.Request, res: express.Response, next) => {
