@@ -96,6 +96,9 @@ export class ChatController {
   }
 
   onRoomSelected(room: any){
+    if(this.currentRoom == room) {
+      return;
+    }
     this.currentRoom = room;
     this.currentRoom.messages = this.currentRoom.messages || [];
     this.ChatService.prepareRoom(this.currentRoom);

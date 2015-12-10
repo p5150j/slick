@@ -1,6 +1,5 @@
 import {ChatService} from "../chat.service";
-import {Room} from "../../shared/api-models";
-import {User} from "../../shared/api-models";
+import {Room, User} from "../../shared/api-models";
 
 /** @ngInject */
 export function Sidebar(): angular.IDirective {
@@ -14,10 +13,22 @@ export function Sidebar(): angular.IDirective {
     bindToController: {
       slRooms: '=',
       slUsers: '=',
-      slOnRoomSelected: '&'
-    }
+      slSelectedRoom: '=',
+      slOnRoomSelected: '&',
+    },
+    link: linkFunction
   };
 
+}
+
+function linkFunction(scope, element, attrs, controller){
+  let selectedRoomClass = 'selected-room';
+  scope.$watch('vm.slSelectedRoom', (room) => {
+    controller.$timeout(() => {
+      element.find('.' + selectedRoomClass).removeClass(selectedRoomClass);
+      room && angular.element('#room'+room._id).addClass(selectedRoomClass);
+    });
+  });
 }
 
 /** @ngInject */
@@ -26,11 +37,13 @@ export class SlSidebarController {
   public slOnRoomSelected: Function;
   public slRooms: Room[];
   public slUsers: User[];
+  public slSelectedRoom: Room;
 
-  constructor(private ChatService: ChatService) {
+  constructor(private ChatService: ChatService, public $timeout: angular.ITimeoutService) {
     //this.ChatService.getChannels().then((response: any[]) => {
     //  this.channels = response;
     //})
+
   }
 
   onRoomSelected = (room) => {
@@ -38,8 +51,15 @@ export class SlSidebarController {
   };
 
   onUserSelected = (user) => {
-    this.ChatService.getRoomIM(user).then((room) => {
-      this.slRooms.unshift(room);
+    this.ChatService.getRoomIM(user)
+      .then((room) => {
+        let roomIx = _.findIndex(this.slRooms, {_id: room._id});
+        if(roomIx >= 0) {
+          this.slRooms[roomIx] = room; //overwrite just in case
+        }else {
+          this.slRooms.unshift(room);
+        }
+        this.onRoomSelected(room);
     });
   };
 

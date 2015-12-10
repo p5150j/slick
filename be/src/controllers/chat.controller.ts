@@ -78,15 +78,19 @@ export class ChatController {
     delete req.body._id; //just in case..
     var newRoom: Room = req.body;
     var toUser = req.params['toUser'];
+    var myUser = req.user._id;
 
     //----- validate room better - ie. some validator object for rooms
     if (!toUser) {
       return next(new ValidationError('toUser is required'))
     }
-    let users = [toUser, req.user._id];
+    if (myUser == toUser) {
+      return next(new ValidationError('can\'t make a conversation to yourself - maniac'));
+    }
+    let users = [toUser, myUser];
     let model: IRoom;
 
-    this.RoomRepository.findOne({type: ROOM_TYPES.IM, users: users}).exec((err: Error, room: IRoom) => {
+    this.RoomRepository.findOne({type: ROOM_TYPES.IM, users: {$all: users}}).exec((err: Error, room: IRoom) => {
       if (err) {
         return next(new ValidationError("find error",err));
       }

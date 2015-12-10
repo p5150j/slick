@@ -1,7 +1,7 @@
+
 import Dictionary = _.Dictionary;
 import {Room, Message, User, ROOM_TYPES} from "../shared/api-models";
 import {PrincipalService} from "../login/principal.service";
-import {Room} from "../../../../be/src/shared/api-models";
 
 export class ChatService {
 
@@ -38,6 +38,7 @@ export class ChatService {
       })
       .catch((error: any): any => {
         this.$log.error('Coulndt get data.\n', error.data);
+        this.$q.reject(error);
       });
   }
 
@@ -62,6 +63,7 @@ export class ChatService {
       })
       .catch((error: any): any => {
         this.$log.error('Couldnt get data.\n', error.data);
+        this.$q.reject(error);
       });
   }
 
@@ -82,6 +84,7 @@ export class ChatService {
       })
       .catch((error: any): any => {
         this.$log.error('Couldnt get a room.\n', error.data);
+        this.$q.reject(error);
       });
 
   }

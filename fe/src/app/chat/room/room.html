@@ -13,10 +13,10 @@
           <ng-md-icon aria-label="Menu" icon="menu"></ng-md-icon>
         </md-button>
         <h2>
-          <span>Slick- {{vm.slRoom.displayName}}</span>
-          <small ng-click="showUsers = !showUsers"> <ng-md-icon aria-label="Users" icon="people"></ng-md-icon> {{vm.slRoom.users.length}} participants</small>
+          <span>Slick- {{::vm.slRoom.displayName}}</span>
+          <small ng-click="showUsers = !showUsers"> <ng-md-icon aria-label="Users" icon="people"></ng-md-icon> {{::vm.slRoom.users.length}} participants</small>
           <div ng-if="showUsers">
-          <span ng-repeat="u in vm.slRoom.usersObj"> {{u.username}}</span>
+          <span ng-repeat="u in vm.slRoom.usersObj"> {{::u.username}}</span>
           </div>
         </h2>
         <span flex></span>
@@ -27,7 +27,7 @@
       </div>
     </md-toolbar>
 <main class='md-padding' layout="row" flex>
-  <sl-messages flex="100" sl-messages="vm.slRoom.messages"></sl-messages>
+  <sl-messages flex="100" sl-messages="::vm.slRoom.messages"></sl-messages>
 </main>
 
 <footer>
