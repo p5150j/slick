@@ -36,17 +36,6 @@
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
 body{
 font-family: 'Raleway', sans-serifimportant;
   }
@@ -170,7 +159,7 @@ font-family: 'Raleway', sans-serifimportant;
          .chat-history {
        /*  height: 300px;*/
          padding: 8px 24px;
-         overflow-y: scroll;
+         overflow-y: auto;
          }
          .chat-message {
          margin: 16px 0;
@@ -187,7 +176,7 @@ font-family: 'Raleway', sans-serifimportant;
          font-size: 10px;
          }
          .chat-feedback {
-         font-style: italic; 
+         font-style: italic;
          margin: 0 0 0 80px;
          }
          .nav{

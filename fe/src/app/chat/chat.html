@@ -1,7 +1,7 @@
 <div layout="row" class="sl-chat" layout-fill>
 
   <div class="left-panel">
-    <sl-sidebar sl-rooms="vm.rooms" sl-on-room-selected="vm.onRoomSelected(room)"></sl-sidebar>
+    <sl-sidebar sl-rooms="vm.rooms" sl-users="vm.users" sl-on-room-selected="vm.onRoomSelected(room)"></sl-sidebar>
     <label>Status {{vm.connected? 'Connected' : 'Offline'}}</label>
     <md-content>
       <md-button ng-click="vm.get()">Test BE</md-button>

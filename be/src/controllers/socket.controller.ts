@@ -1,7 +1,7 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
 import {Promise} from "mongoose";
-import {Message} from "../shared/api-models";
+import {Message, User} from "../shared/api-models";
 import { IMessage, MessageRepository } from '../models/message.model'
 import { IUser, UserRepository } from '../models/user.model'
 import {IRoom, RoomRepository} from "../models/room.model";
@@ -38,7 +38,7 @@ export class SocketController {
           .then((savedMessage: IMessage)=> {
             console.log('message saved');
             newMessage._id = savedMessage.id;
-            newMessage.ts = <string>savedMessage.ts;
+            newMessage.ts = <any>savedMessage.ts;
 
             this.socketClients.newMessage(newMessage);
           });
@@ -48,16 +48,14 @@ export class SocketController {
 
 
   login(accessToken: string, socket: SocketIO.Socket): Promise<any> {
-    return this.UserRepository.findOne({token: accessToken}, (err, user) => {
+    return this.UserRepository.findOne({token: accessToken}, (err, user:IUser) => {
       if (err || !user) {
         return socket.disconnect(true);
       }
-
-      console.log(user);
-      var userId: string = <string>user._id;
+      var userId: string = <any>user._id;
 
       socket['userId'] = userId;
-      console.log('logged into socket');
+      console.log('logged into socket -', userId + '-' + user.username);
 
       this.socketClients.confirmLogin(userId);
       this.socketClients.broadcastUserStatusChanged(userId, true);

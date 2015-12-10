@@ -49,6 +49,7 @@ export class AuthenticationController {
         res.send(req.user);
       });
 
+//@TODO: protect from here
     router.post('/logout', (req, res) => {
       req.logout();
     });
@@ -97,6 +98,7 @@ export class AuthenticationController {
         if (!user) {
           return res.status(401).json({message: 'invalid or missing token'});
         }
+        req.user = user;
         next();
       })(req, res, next);
     });

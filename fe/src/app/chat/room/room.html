@@ -13,7 +13,11 @@
           <ng-md-icon aria-label="Menu" icon="menu"></ng-md-icon>
         </md-button>
         <h2>
-          <span>Slick- {{vm.slRoom.name}}</span><small>this room has {{vm.slRoom.users.length}} users - in slRoom.usersObj you have the names!</small>
+          <span>Slick- {{vm.slRoom.displayName}}</span>
+          <small ng-click="showUsers = !showUsers"> <ng-md-icon aria-label="Users" icon="people"></ng-md-icon> {{vm.slRoom.users.length}} participants</small>
+          <div ng-if="showUsers">
+          <span ng-repeat="u in vm.slRoom.usersObj"> {{u.username}}</span>
+          </div>
         </h2>
         <span flex></span>
         <md-button class="md-icon-button" aria-label="More">
@@ -27,7 +31,7 @@
 </main>
 
 <footer>
-  
+
 
     <md-card style="">
     <md-input-container>

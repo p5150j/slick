@@ -1,6 +1,6 @@
 import {ChatService} from './chat.service';
 import {PrincipalService} from "../login/principal.service";
-import {Message} from "../../../../be/src/shared/api-models";
+import { Message } from "../shared/api-models";
 
 
 export class ChatController {
@@ -16,7 +16,7 @@ export class ChatController {
   private MySocket: SocketIOClient.Socket;
 
   /* @ngInject */
-  constructor(private ChatService: ChatService, private toastr: any, MySocket: SocketIOClient.Socket, private PrincipalService: PrincipalService) {
+  constructor(private ChatService: ChatService, private toastr: any, MySocket: SocketIOClient.Socket) {
     this.MySocket = MySocket;
 
     this.logMessages = [];
@@ -30,7 +30,7 @@ export class ChatController {
     this.ChatService.getInitialData().then((data: any)=> {
       this.users = data.users;
       this.rooms = data.rooms;
-      this.onRoomSelected(this.rooms[Object.keys(this.rooms)[0]]); //first room
+      this.onRoomSelected(this.rooms[0]); //first room
     });
 
     // Whenever the server emits 'login', log the login message
@@ -79,8 +79,10 @@ export class ChatController {
 
   addChatMessage(data: Message) {
     this.ChatService.prepareMessage(data);
-    if(this.rooms[data.room]){
-      var room = this.rooms[data.room];
+    let allRooms = this.ChatService.getRooms();
+    let room;
+
+    if(room = allRooms[data.room]){
       if(room == this.currentRoom){
         //animate?
       }else {

@@ -37,34 +37,59 @@ export class IndexRoute {
         username: 'Ramiro',
         password: 'admin',
         role: 'admin'
+      },
+      {
+        _id: '565e2d404628fbac0d1a10d3', //
+        email: 'user1@gmail.com',
+        username: 'User1',
+        password: 'admin',
+        role: 'user'
+      },
+      {
+        _id: '565e2d404628fbac0d1a10d4', //
+        email: 'user2@gmail.com',
+        username: 'User2',
+        password: 'admin',
+        role: 'user'
+      },
+      {
+        _id: '565e2d404628fbac0d1a10d5', //
+        email: 'user3@gmail.com',
+        username: 'User3',
+        password: 'admin',
+        role: 'user'
       }
+
     ];
     let rooms = [
       {
+        _id: '565e2d404628fbac0d1a10f0',
         name: 'A private IM between 2 users', //client will show other person name
         desc: '',
         users: [users[0]._id, users[1]._id],
         type: 'IM'
       },
       {
+        _id: '565e2d404628fbac0d1a10f1',
         name: 'A private IM between 2 users II', //client will show other person name
         desc: '',
         users: [users[1]._id, users[2]._id],
         type: 'IM'
       },
       {
+        _id: '565e2d404628fbac0d1a10f2',
         name: 'A private IM between 2 users III', //client will show other person name
         desc: '',
         users: [users[0]._id, users[2]._id],
         type: 'IM'
       },
       {
+        _id: '565e2d404628fbac0d1a10f3',
         name: 'Development', //client will show other person name
         desc: '',
         users: [users[0]._id, users[1]._id, users[2]._id,],
         type: 'GIM'
       },
-
     ];
 
     return {

@@ -1,4 +1,7 @@
 import {ChatService} from "../chat.service";
+import {Room} from "../../shared/api-models";
+import {User} from "../../shared/api-models";
+
 /** @ngInject */
 export function Sidebar(): angular.IDirective {
 
@@ -10,6 +13,7 @@ export function Sidebar(): angular.IDirective {
     scope: true,
     bindToController: {
       slRooms: '=',
+      slUsers: '=',
       slOnRoomSelected: '&'
     }
   };
@@ -18,8 +22,10 @@ export function Sidebar(): angular.IDirective {
 
 /** @ngInject */
 export class SlSidebarController {
-  public channels: any[];
 
+  public slOnRoomSelected: Function;
+  public slRooms: Room[];
+  public slUsers: User[];
 
   constructor(private ChatService: ChatService) {
     //this.ChatService.getChannels().then((response: any[]) => {
@@ -27,9 +33,16 @@ export class SlSidebarController {
     //})
   }
 
-  onRoomSelected(room) {
-    this['slOnRoomSelected']({room: room});
-  }
+  onRoomSelected = (room) => {
+    this.slOnRoomSelected({room: room});
+  };
+
+  onUserSelected = (user) => {
+    this.ChatService.getRoomIM(user).then((room) => {
+      this.slRooms.unshift(room);
+    });
+  };
+
 
   getStatusIcon(channel) {
     if (channel.status == 'online') {
