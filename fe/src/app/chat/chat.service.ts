@@ -5,6 +5,7 @@ import {PrincipalService} from "../login/principal.service";
 
 export class ChatService {
 
+  //this could be local storage + api layer in the future
   private UserMap: Dictionary<User>;
   private RoomsMap: Dictionary<Room>;
 
@@ -65,6 +66,19 @@ export class ChatService {
         this.$log.error('Couldnt get data.\n', error.data);
         this.$q.reject(error);
       });
+  }
+
+  getRoomById(roomId: String): angular.IPromise<Room> {
+    if (this.RoomsMap[roomId]) {
+      return this.$q.when(this.RoomsMap[roomId]);
+    } else {
+      return this.$http.get(this.apiUrl + 'rooms/' + roomId).then((resp)=> {
+        var room: Room = resp.data;
+        this.prepareRoom(room);
+        this.RoomsMap[roomId] = room;
+        return room;
+      })
+    }
   }
 
   getRoomIM(user: User): angular.IPromise<Room> {

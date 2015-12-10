@@ -90,7 +90,10 @@ export class ChatController {
       }
       room.messages.push(data);
     }else {
-      console.log('Create new room!!!');
+      this.ChatService.getRoomById(data.room).then((room) => {
+
+      });
+      //console.log('Create new room!!!');
     }
 
   }
