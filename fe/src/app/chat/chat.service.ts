@@ -39,13 +39,13 @@ export class ChatService {
       })
       .catch((error: any): any => {
         this.$log.error('Coulndt get data.\n', error.data);
-        this.$q.reject(error);
+        return this.$q.reject(error);
       });
   }
 
   getInitialData(): angular.IPromise<any[]> {
     return this.$http.get(this.apiUrl + 'init')
-      .then((response: any): any => {
+      .then((response: {data: {users:User[], rooms:Room[]}}): any => {
         var data = response.data;
 
         //data.users = _.indexBy(data.users, '_id');
@@ -64,15 +64,15 @@ export class ChatService {
       })
       .catch((error: any): any => {
         this.$log.error('Couldnt get data.\n', error.data);
-        this.$q.reject(error);
+        return this.$q.reject(error);
       });
   }
 
-  getRoomById(roomId: String): angular.IPromise<Room> {
+  getRoomById(roomId: string): angular.IPromise<Room> {
     if (this.RoomsMap[roomId]) {
       return this.$q.when(this.RoomsMap[roomId]);
     } else {
-      return this.$http.get(this.apiUrl + 'rooms/' + roomId).then((resp)=> {
+      return this.$http.get(this.apiUrl + 'rooms/' + roomId).then((resp: {data: Room})=> {
         var room: Room = resp.data;
         this.prepareRoom(room);
         this.RoomsMap[roomId] = room;
@@ -89,7 +89,6 @@ export class ChatService {
         if (this.RoomsMap[data._id]) { //exists
           return this.RoomsMap[data._id]; //
         } else {
-          data.messages = []; //@TODO - from server
           this.prepareRoom(data);
           this.RoomsMap[data._id] = data;
         }
@@ -98,15 +97,17 @@ export class ChatService {
       })
       .catch((error: any): any => {
         this.$log.error('Couldnt get a room.\n', error.data);
-        this.$q.reject(error);
+        return this.$q.reject(error);
       });
 
   }
 
   prepareRoom(room: Room): void {
+    //@TODO: make it check if it's already prepared
+
     let me = this.PrincipalService.getUserId();
 
-    //@TODO: make it check if it's already prepared
+    room.messages = room.messages || [];
     room.messages.forEach((message) => {
       this.prepareMessage(message);
     });

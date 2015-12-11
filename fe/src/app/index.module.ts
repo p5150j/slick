@@ -35,8 +35,8 @@ module slick {
     .directive('acmeNavbar', acmeNavbar)
   ;
 
-  require('../app/shared/api-models.ts');
   // load all other modules @TODO: refactor
+  require('../app/shared/api-models.ts');
   require('../app/chat/chat.module');
   require('../app/login/login.module');
   require('../app/components/util/kcd-recompile.directive');

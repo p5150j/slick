@@ -31,7 +31,7 @@ export class Message {
 
 export class User {
   _id: string;
-  role: String;
-  email: String;
-  username: String;
+  role: string;
+  email: string;
+  username: string;
 }
