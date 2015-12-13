@@ -26,5 +26,5 @@ export function routerConfig($stateProvider: angular.ui.IStateProvider, $urlRout
     })
   ;
 
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/chat');
 }

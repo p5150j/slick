@@ -8,7 +8,7 @@ import { Messages } from './room/messages/messages.directive'
 import { Room } from './room/room.directive'
 import { runBlock } from './socket.auth.run'
 
-import io from 'socket.io-client';
+var io: any = <any>require('socket.io-client');
 
 angular.module('slick.chat', [
     'btford.socket-io',
@@ -22,8 +22,9 @@ angular.module('slick.chat', [
   .run(runBlock)
 
 
-  .factory('MySocket', ['socketFactory', 'socketUrl', (socketFactory: any, socketUrl: string) => {
-      var socket = io.connect(socketUrl);
+  .factory('MySocket', ['socketFactory', (socketFactory: any /*socketUrl: string*/) => {
+
+      var socket = io.connect();
 
       socket.on('error', () => {
         console.log('connect_error');
