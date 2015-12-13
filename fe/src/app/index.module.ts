@@ -1,4 +1,6 @@
-/// <reference path="../../.tmp/typings/tsd.d.ts" />
+/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="./require.d.ts" />
+
 
 import { config } from './index.config';
 import { routerConfig } from './index.route';
@@ -13,6 +15,8 @@ var apiUrl: string = 'http://localhost:3002/api/';
 var authUrl: string = 'http://localhost:3002/';
 var socketUrl: string = 'http://localhost:3002';
 
+require('./index.scss');
+
 module slick {
   'use strict';
 
@@ -22,7 +26,7 @@ module slick {
     'slick.chat',
     'kcd.directives'
   ])
-    .constant('moment', moment)
+    //.constant('moment', moment)
     .constant('apiUrl', apiUrl)
     .constant('authUrl', authUrl)
     .constant('socketUrl', socketUrl)
@@ -35,11 +39,11 @@ module slick {
     .directive('acmeNavbar', acmeNavbar)
   ;
 
+  require('./shared/api-models.ts');
   // load all other modules @TODO: refactor
-  require('../app/shared/api-models.ts');
-  require('../app/chat/chat.module');
-  require('../app/login/login.module');
-  require('../app/components/util/kcd-recompile.directive');
+  require('./chat/chat.module');
+  require('./login/login.module');
+  require('./components/util/kcd-recompile.directive');
 
 }
 

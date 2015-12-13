@@ -1,22 +1,26 @@
+var mainTemplate = require('./main/main.html');
+var loginTemplate = require('./login/login.html');
+var chatTemplate = require('./chat/chat.html');
+
 /** @ngInject */
 export function routerConfig($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider) {
   $stateProvider
     .state('home', {
       url: '/home',
-      templateUrl: 'app/main/main.html',
+      templateUrl: mainTemplate, //'app/main/main.html',
       controller: 'MainController',
       controllerAs: 'main'
     })
     .state('auth', {
       url: '/login',
-      templateUrl: 'app/login/login.html',
+      templateUrl: loginTemplate,
       controller: 'LoginController',
       controllerAs: 'vm'
     })
 
     .state('chat', {
       url: '/chat',
-      templateUrl: 'app/chat/chat.html',
+      templateUrl: chatTemplate,
       controller: 'ChatController',
       controllerAs: 'vm'
     })

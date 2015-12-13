@@ -8,8 +8,7 @@ import { Messages } from './room/messages/messages.directive'
 import { Room } from './room/room.directive'
 import { runBlock } from './socket.auth.run'
 
-declare var io: any; // SocketIO.Client;
-
+import io from 'socket.io-client';
 
 angular.module('slick.chat', [
     'btford.socket-io',
