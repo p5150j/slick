@@ -12,8 +12,8 @@ module.exports = (function makeWebpackConfig(options) {
   var config = {
     entry: {
       app: ['./src/app/index.module.ts'],
-      vendor: [ //instead of setting files in index.html - do it here
-
+      vendor: [
+        //instead of setting files in index.html - do it here
         'jquery',
         'angular',
         'angular-animate',
@@ -110,7 +110,7 @@ module.exports = (function makeWebpackConfig(options) {
       notify: false
     });
     config.devtool = 'source-map';
-    config.plugins.push(browserSync);
+    //config.plugins.push(browserSync);
     config.devServer = {
       contentBase: './dev'
     };
@@ -126,7 +126,8 @@ module.exports = (function makeWebpackConfig(options) {
       inject: 'body',
       hash: true
     }));
-    config.plugins.push(new webpack.NoErrorsPlugin(),
+    config.plugins.push(
+      //new webpack.NoErrorsPlugin(),
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
       // Minify all javascript, switch loaders to minimizing mode
       new webpack.optimize.DedupePlugin(),
@@ -158,78 +159,7 @@ module.exports = (function makeWebpackConfig(options) {
   }));
   return config;
 })({
-  BUILD: false,
+  BUILD: argv.BUILD == 1,
   TEST: false
 });
-//
-//module.exports = {
-//  resolve: {
-//    //root: nodeModulesDir,
-//    extensions: ['', '.ts']},
-//  entry: {
-//    app: path.resolve(__dirname, 'src/app/index.module.ts')
-//  },
-//  module: {
-//    //preLoaders: [{ test: /\.ts$/, exclude: /node_modules/, loader: 'tslint-loader'}],
-//    //loaders: [
-//    //  {test: /\.ts$/, exclude: [nodeModulesDir], loaders: ['ng-annotate', 'awesome-typescript-loader']}
-//    //]
-//    loaders: [
-//      {test: /\.ts$/, exclude: /node_modules/, loader: 'babel-loader!ts-loader'},
-//      //{
-//      //  test: /\.css$/,
-//      //  loader: 'style-loader!css-loader'
-//      //},
-//      //{
-//      //  test: /\.scss$/,
-//      //  loader: 'style!css!sass'
-//      //}, {
-//      //  test: /\.html$/,
-//      //  exclude: /node_modules/,
-//      //  loader: 'raw'
-//      //}, {
-//      //  test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-//      //  loader: 'url-loader?limit=10000&minetype=application/font-woff'
-//      //}, {
-//      //  test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-//      //  loader: 'file-loader'
-//      //}, {
-//      //  test: '\.jpg$',
-//      //  exclude: /node_modules/,
-//      //  loader: 'file'
-//      //}, {
-//      //  test: '\.png$',
-//      //  exclude: /node_modules/,
-//      //  loader: 'url'
-//      //}
-//    ]
-//  },
-//  resolveLoader: {
-//    modulesDirectories: ["node_modules"]
-//  },
-//  output: {
-//    path: path.resolve(__dirname, './build'),
-//    filename: 'bundle.js',
-//  },
-//  plugins: [
-//    //new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
-//    new HtmlWebpackPlugin({
-//      template: './src/index.html',
-//      inject: true,
-//      //chunks: ['vendors', 'app'],
-//      hash: true
-//    }),
-//    new webpack.ProvidePlugin({
-//      'angular': 'angular'
-//    })
-//  ],
-//  devtool: 'eval-source-map',
-//  devServer: {
-//    historyApiFallback: true,
-//    stats: {
-//      chunkModules: false,
-//      colors: true
-//    },
-//    contentBase: './build'
-//  }
-//};
+

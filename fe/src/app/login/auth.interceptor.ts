@@ -1,7 +1,8 @@
 ﻿import {PrincipalService} from "./principal.service";
 import IQService = angular.IQService;
 'use strict';
-/** @ngInject */
+AuthInterceptor.$inject = ['PrincipalService', '$q', '$injector', 'apiUrl'];
+
 export function AuthInterceptor(PrincipalService: PrincipalService, $q: angular.IQService, $injector: any, apiUrl: string) {
 
   return {

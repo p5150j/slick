@@ -2,8 +2,9 @@
   "name": "slick",
   "version": "0.0.0",
   "scripts": {
-    "build": "webpack --config webpack.build.js --bail --color --NODE_ENV=dev",
-    "start": "rimraf dev && webpack --config webpack.config.js --watch --NODE_ENV=dev",
+    "d": "webpack-dev-server --hot --inline --NODE_ENV=dev --content-base dev",
+    "build": "webpack --bail --color --NODE_ENV=dev --BUILD=1",
+    "start": "rimraf dev && webpack --watch --NODE_ENV=dev",
     "test": "karma start --NODE_ENV=test",
     "test:live": "karma start --auto-watch --no-single-run --NODE_ENV=dev"
   },
