@@ -4,6 +4,7 @@
   "dependencies": {
     "bcrypt": "^0.8.5",
     "body-parser": "^1.14.1",
+    "compression": "^1.6.0",
     "cors": "^2.7.1",
     "express": "^4.13.3",
     "glob": "^6.0.1",
