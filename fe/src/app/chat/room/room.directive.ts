@@ -1,9 +1,8 @@
-
-
-import api = require ('../../shared/api-models');
-import {Room} from "../../shared/api-models";
+import {Room, Message} from "../../shared/api-models";
 import {ChatSocketService} from "../chat-socket.service";
-import {Message} from "../../shared/api-models";
+
+var tpl = require('./room.html');
+
 
 /** @ngInject */
 export function Room(): angular.IDirective {
@@ -11,7 +10,7 @@ export function Room(): angular.IDirective {
   return {
     restrict: 'E',
     scope: {},
-    templateUrl: 'app/chat/room/room.html',
+    templateUrl: tpl,
     controller: SlRoomController,
     controllerAs: 'vm',
     bindToController: {
@@ -60,7 +59,7 @@ export class SlRoomController {
     // if there is a non-empty message and a socket connection
     if (message) {
 
-      let m = new api.Message();
+      let m = new Message();
       m.text = message;
       m.room = this.slRoom._id;
       this.ChatSocketService.sendMessage(m);

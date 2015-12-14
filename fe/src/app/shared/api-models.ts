@@ -3,7 +3,7 @@
 
 export enum ROOM_TYPES {
   IM = 'IM', //immediate message
-  GIM = 'GIM' //group IM
+  GIM = 'GIM', //group IM
 }
 
 export class Room {
@@ -31,7 +31,7 @@ export class Message {
 
 export class User {
   _id: string;
-  role: String;
-  email: String;
-  username: String;
+  role: string;
+  email: string;
+  username: string;
 }

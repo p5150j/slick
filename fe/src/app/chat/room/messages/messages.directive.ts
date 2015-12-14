@@ -1,12 +1,14 @@
 import {Message} from "../../../shared/api-models";
 
+var tpl = require('./messages.html');
+
 /** @ngInject */
 export function Messages(): angular.IDirective {
 
   return {
     restrict: 'E',
     scope: true,
-    templateUrl: 'app/chat/room/messages/messages.html',
+    templateUrl: tpl,
     controller: SlMessagesController,
     controllerAs: 'vm',
     bindToController: {

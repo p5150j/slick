@@ -5,27 +5,19 @@ import path = require('path');
 import logger = require('morgan');
 import bodyParser = require('body-parser');
 import cors = require('cors')
-
 import config = require("./config");
 import mongoose = require("mongoose");
-
 import socketio = require('socket.io');
-
-
 import {AuthenticationController}  from './auth/AuthenticationController';
-
-
-//import routes = require('./routes/index');
-//import users = require('./routes/users');
-
 import {SocketRoute} from './routes/socket.route';
 import {ChatRoute} from "./routes/chat.route";
 import {IndexRoute} from "./routes/index";
 import {SocketClients} from "./util/socket-clients";
 import {SocketController} from "./controllers/socket.controller";
-import {ChatRoute} from "./routes/chat.route";
 import {ValidationError} from "./models/validation.error";
 
+
+var feDistFolder = path.resolve(__dirname, '../../fe/dist'); //to easily test deployment version
 
 var app: express.Express = express();
 
@@ -58,7 +50,7 @@ new ChatRoute().appendRoutes(apiRouter);
 //  next();
 //});
 app.use('/api', apiRouter);
-app.use('/', authRouter);
+app.use('/auth', authRouter);
 
 //app.get('/', (req, res) => {
 //    res.send('hello');
@@ -112,6 +104,8 @@ var port: number = process.env.PORT || config.port,
   socketRoutes = new SocketRoute(io, socketController)
   ;
 
+console.log(feDistFolder);
+app.use('/', express.static(feDistFolder));
 
 //server.listen(port, () => {
 http.listen(port, () => {

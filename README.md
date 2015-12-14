@@ -30,23 +30,49 @@ For fe
 $  cd be 
 $  npm install
 $  tsd install
-$  bower install
 ```
 
-## Booting up the project
+## Booting up the project - DEVELOPMENT
 
 You will need to open 2 consoles and run both projects and MongoDb.
 
+
 ```shell
-$ cd be AND cd fe
+$ cd be
+$ [npm install && tsd install]
 $ gulp
 ```
+
+```shell
+$ cd fe
+$ [npm install && tsd install]
+$ npm start  #loads webpack server - note that no files are written to disk!! all in memory
+```
+You need to hit manually http://localhost:3000/index.html - though changes will be reloaded automatically.
+
+## Booting up the project - PROD version - not so pro, but comfortable
+
+Build FE -
+```shell
+$ cd fe
+$ [npm install && tsd install]
+$ npm build  #writes files to `fe/dist`
+```
+
+Run be - which has a relative path to  `fe/dist` to serve it statically
+```shell
+$ cd be
+$ [npm install && tsd install]
+$ gulp #this will run express with nodemon, you can use whatever to run express after building it
+```
+Hit http://localhost:3002/index.html
+
 
 ## Seed users and rooms 
 
 hit `http://localhost:3002/setup` and your users and rooms will be erased and recreated.
 
-## Tests 
+## Tests
 (Never run them.. this is a placeholder. I'll make some tests when code is stable)
 
 > This project uses jasmine and Karma for automated unit testing, you

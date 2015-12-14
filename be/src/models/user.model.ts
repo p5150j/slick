@@ -10,11 +10,11 @@ var bcrypt = require('bcrypt')
   , salt_factor = 10;
 
 export interface IUser extends mongoose.Document {
-  role: String,
-  email: String,
-  password: String,
-  username: String,
-  token: String
+  role: string,
+  email: string,
+  password: string,
+  username: string,
+  token: string
 }
 
 

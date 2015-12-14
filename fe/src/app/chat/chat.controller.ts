@@ -31,6 +31,7 @@ export class ChatController {
       this.users = data.users;
       this.rooms = data.rooms;
       this.onRoomSelected(this.rooms[0]); //first room
+
     });
 
     // Whenever the server emits 'login', log the login message
@@ -78,7 +79,7 @@ export class ChatController {
 
 
   addChatMessage(data: Message) {
-    this.ChatService.prepareMessage(data);
+    this.ChatService.prepareMessage(data); //this should come from the service -> data is 'prepared' there
     let allRooms = this.ChatService.getRooms();
     let room;
 
@@ -90,7 +91,10 @@ export class ChatController {
       }
       room.messages.push(data);
     }else {
-      console.log('Create new room!!!');
+      this.ChatService.getRoomById(data.room).then((room) => {
+        this.rooms.push(room);
+      });
+      //console.log('Create new room!!!');
     }
 
   }
@@ -101,7 +105,7 @@ export class ChatController {
     }
     this.currentRoom = room;
     this.currentRoom.messages = this.currentRoom.messages || [];
-    this.ChatService.prepareRoom(this.currentRoom);
+    //this.ChatService.prepareRoom(this.currentRoom);
     this.log('room selected');
   }
 

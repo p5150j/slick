@@ -1,12 +1,14 @@
 import {ChatService} from "../chat.service";
 import {Room, User} from "../../shared/api-models";
 
+var tpl = require('./sidebar.html');
+
 /** @ngInject */
 export function Sidebar(): angular.IDirective {
 
   return {
     restrict: 'E',
-    templateUrl: 'app/chat/sidebar/sidebar.html',
+    templateUrl: tpl,
     controller: SlSidebarController,
     controllerAs: 'vm',
     scope: true,

@@ -27,7 +27,7 @@ export class ChatRoute {
       .get(this.controller.getAll);
 
     //router.param("id", this.controller.articleById);
-    //router.param("room_id", this.controller.getRoomParam);
+    router.param("room_id", this.controller.getRoomParam);
 
   }
 }
