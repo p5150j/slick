@@ -8,6 +8,8 @@ import cors = require('cors')
 import config = require("./config");
 import mongoose = require("mongoose");
 import socketio = require('socket.io');
+import compression = require('compression');
+
 import {AuthenticationController}  from './auth/AuthenticationController';
 import {SocketRoute} from './routes/socket.route';
 import {ChatRoute} from "./routes/chat.route";
@@ -15,6 +17,7 @@ import {IndexRoute} from "./routes/index";
 import {SocketClients} from "./util/socket-clients";
 import {SocketController} from "./controllers/socket.controller";
 import {ValidationError} from "./models/validation.error";
+
 
 
 var feDistFolder = path.resolve(__dirname, '../../fe/dist'); //to easily test deployment version
@@ -27,6 +30,7 @@ for (var model of config.globFiles(config.models)) {
 }
 
 
+app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
