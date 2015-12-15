@@ -1,4 +1,3 @@
-
 import Dictionary = _.Dictionary;
 import {Room, Message, User, ROOM_TYPES} from "../shared/api-models";
 import {PrincipalService} from "../login/principal.service";
@@ -29,9 +28,11 @@ export class ChatService {
   getUsers() {
     return this.UserMap;
   }
+
   getRooms() {
     return this.RoomsMap;
   }
+
   getArticles(limit: number = 30): angular.IPromise<any[]> {
     return this.$http.get(this.apiUrl + 'articles?per_page=' + limit)
       .then((response: any): any => {
@@ -45,13 +46,16 @@ export class ChatService {
 
   getInitialData(): angular.IPromise<any[]> {
     return this.$http.get(this.apiUrl + 'init')
-      .then((response: {data: {users:User[], rooms:Room[]}}): any => {
+      .then((response: {data: {users:User[], onlineUsers:string[], rooms:Room[]}}): any => {
         var data = response.data;
 
         //data.users = _.indexBy(data.users, '_id');
         //this will be stored in localstorage someday - need to design to that
         this.UserMap = _.indexBy(data.users, '_id');
 
+        _.forEach(data.onlineUsers, (u) => {
+          this.UserMap[u].online = true;
+        });
 
         data.rooms.forEach((r) => {
           this.prepareRoom(r);
@@ -68,7 +72,7 @@ export class ChatService {
       });
   }
 
-  getRoomById(roomId: string): angular.IPromise<Room> {
+    getRoomById(roomId: string): angular.IPromise<Room> {
     if (this.RoomsMap[roomId]) {
       return this.$q.when(this.RoomsMap[roomId]);
     } else {
@@ -102,12 +106,16 @@ export class ChatService {
 
   }
 
+
   prepareRoom(room: Room): void {
     //@TODO: make it check if it's already prepared
 
     let me = this.PrincipalService.getUserId();
 
     room.messages = room.messages || [];
+    room.messages.sort((m1, m2) => {
+      return (m1.ts < m2.ts) ? 0 : 1;
+    });
     room.messages.forEach((message) => {
       this.prepareMessage(message);
     });

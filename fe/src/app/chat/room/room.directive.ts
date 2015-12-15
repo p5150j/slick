@@ -21,13 +21,12 @@ export function Room(): angular.IDirective {
   };
 
 
-
-  function linkFunction(scope, element, attrs, controller){
+  function linkFunction(scope, element, attrs, controller) {
 
     element.on("$destroy", function () {
       scope.$destroy();
     });
-    scope.$watch('vm.slRoom.messages.length', (newVal) =>{
+    scope.$watch('vm.slRoom.messages.length', (newVal) => {
       let $element = element.find('main');
       controller.$timeout(() => {
         $element[0].scrollTop = $element[0].scrollHeight;
@@ -41,34 +40,42 @@ export class SlRoomController {
 
   public currentMessage: string;
   public slRoom: Room; //room
+  public isConnected: Function;
 
   constructor(private ChatSocketService: ChatSocketService,
-              public $timeout: angular.ITimeoutService
-
-  ) {
+              public $timeout: angular.ITimeoutService) {
     //this.slRoom.usersObj
+
+    this.isConnected = ChatSocketService.isConnected;
 
   }
 
 
+
   // Sends a chat message
   sendMessage() {
+
     var message = this.currentMessage;
     // Prevent markup from being injected into the message
     //message = cleanInput(message);
     // if there is a non-empty message and a socket connection
     if (message) {
 
-      let m = new Message();
-      m.text = message;
-      m.room = this.slRoom._id;
-      this.ChatSocketService.sendMessage(m);
-
-
-      //@TODO - this will return a promise, when it returns we enable the send button again
-      //this.addChatMessage(socketData); //add as transient
       this.currentMessage = '';
 
+      let newMessage = new Message();
+      newMessage.text = message;
+      newMessage.room = this.slRoom._id;
+
+      this.sendPendingMessage(newMessage);
     }
+  }
+
+  sendPendingMessage = (pendingMessage) => {
+    this.slRoom.messages.push(pendingMessage);
+    this.ChatSocketService.sendMessage(pendingMessage)
+      .then((m) => { //someone will add the message for us
+        _.remove(this.slRoom.messages, pendingMessage);
+      });
   }
 }

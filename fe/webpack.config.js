@@ -3,6 +3,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var argv = require('yargs').argv;
 
 var isBuild = argv.BUILD == 1;
@@ -113,7 +114,10 @@ var config = {
       template: options.mainIndexFile,
       inject: 'body',
       hash: true
-    })
+    }),
+    new CopyWebpackPlugin([
+      { from: './src/favicon.ico' }
+    ])
   ]
 };
 if (!options.TEST && !options.BUILD) {

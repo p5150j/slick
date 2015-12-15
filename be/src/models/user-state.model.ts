@@ -1,29 +1,28 @@
-///// <reference path="../../typings/tsd.d.ts" />
-//
-//"use strict";
-//
 //import mongoose = require("mongoose");
 //
-//var SchemaName = 'User';
+//var SchemaName = 'UserState';
 //
-//var bcrypt = require('bcrypt')
-//  , salt_factor = 10;
-//
-//export interface IUser extends mongoose.Document {
+//export interface IUserState extends mongoose.Document {
 //  role: string,
 //  email: string,
 //  password: string,
 //  username: string,
 //  token: string
 //}
+//var l = {
+//  status = [
+//  {
+//    room: '1343',
+//    lastSent: '12345678'
+//  }]
+//}
 //
-//
-//var UserSchema: mongoose.Schema = new mongoose.Schema({
+//var UserStateSchema: mongoose.Schema = new mongoose.Schema({
 //  role: { type: String, enum: ['user', 'admin'], default: 'user' },
-//  email: { type: String, required: true, index: { unique:true } },
+//  room: { type: String, required: true, index: { unique:true } },
 //  password: { type: String, required: true },
 //  username: { type: String, required: true },
 //  token: String
 //});
 //
-//export var UserRepository = mongoose.model<IUser>(SchemaName, UserSchema);
+//export var UserStateRepository = mongoose.model<IUserState>(SchemaName, UserStateSchema);

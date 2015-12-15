@@ -1,14 +1,13 @@
-/// <reference path="../../typings/tsd.d.ts" />
 
-"use strict";
-
-import {User, ROOM_TYPES, Room} from "../shared/api-models";
-import {ValidationError} from "../models/validation.error";
 import express = require("express");
 import mongoose = require("mongoose");
+import {User, ROOM_TYPES, Room} from "../shared/api-models";
+import {ValidationError} from "../models/validation.error";
 import {IMessage, MessageRepository} from "../models/message.model";
 import {IUser, UserRepository} from "../models/user.model";
 import {IRoom, RoomRepository} from "../models/room.model";
+import {SocketClients} from "../util/socket-clients";
+import Server = SocketIO.Server;
 
 var _ = require('lodash');
 
@@ -20,7 +19,7 @@ export class ChatController {
   private UserRepository: mongoose.Model<IUser>;
 
 
-  constructor() {
+  constructor(private socketClients: SocketClients) {
     this.Article = mongoose.model("Article");
     this.MessageRepository = MessageRepository;
     this.RoomRepository = RoomRepository;
@@ -28,41 +27,29 @@ export class ChatController {
   }
 
   public init = (req: express.Request, res: express.Response, next: Function) => {
-    var myRooms;
-    var user: User = req.user;
-    console.log('the user is ', user._id + '-' + user.username);
-
+    let myRooms;
+    let user: User = req.user;
+    console.log('Init for', user._id + '-' + user.username);
 
     this.RoomRepository.find({'users': user._id}).lean().exec() //@TODO: move this to redis (user->room map)
       .then((rooms)=> {
         myRooms = rooms;
-        let roomIds = _.pluck(rooms, '_id');
-        console.log('room', roomIds);
-        //return roomIds;
-        //
-        return this.MessageRepository.aggregate([
-          {
-            $match: {room: {$in: roomIds}}
-          },
-          {
-            $group: {
-              _id: '$room',
-              messages: {$push: {_id: '$id', text: '$text', ts: '$ts', user: '$user'}}
-            }
-          }
-        ]).exec()
+        return this.MessageRepository['getForRooms'](_.pluck(rooms, '_id')).exec()
       })
       .then((messages) => {
-        var ixMessages = _.indexBy(messages, '_id');
+        let roomIndexedMessages = _.indexBy(messages, '_id');
 
-        myRooms.forEach((room, index, array)=> {
-          array[index].messages = ixMessages[room._id] ? ixMessages[room._id].messages : [];
+        myRooms.forEach((room, r, myRooms)=> {
+          myRooms[r].messages = roomIndexedMessages[room._id] ? roomIndexedMessages[room._id].messages : [];
         });
 
         this.UserRepository.find({}, 'username role').lean().exec().then((users)=> {
 
+          let onLineUsers = this.socketClients.getOnlineUsers();
+
           res.json({
             users: users,
+            onlineUsers: onLineUsers,
             rooms: myRooms
           });
 
@@ -127,8 +114,15 @@ export class ChatController {
   };
 
 
-  public getRoom = (req: any, res: express.Response): void => {
-    res.json(req.room);
+  public getRoom = (req: any, res: express.Response, next): void => {
+    let room:IRoom = req.room;
+    this.MessageRepository['getForRoom'](room.id)
+      .exec().then((messages) =>{
+      room['messages'] = messages;
+      res.json(req.room);
+    }, (err) => {
+      return next(new ValidationError(err));
+    });
   };
 
   public getRoomParam = (req: any, res: express.Response, next: Function, id: string) => {

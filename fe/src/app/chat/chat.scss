@@ -187,6 +187,10 @@ p {
 .chat {
   font-size: 12px;
   background: #fff;
+
+  .pending {
+    color: yellowgreen;
+  }
 }
 
 .chat-history {
