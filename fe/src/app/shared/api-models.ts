@@ -34,4 +34,6 @@ export class User {
   role: string;
   email: string;
   username: string;
+  //populated FE--------------
+  online:boolean
 }

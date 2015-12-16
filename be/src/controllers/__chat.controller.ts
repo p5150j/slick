@@ -1,14 +1,13 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-"use strict";
-
-import {User} from "../shared/api-models";
 import express = require("express");
 import mongoose = require("mongoose");
+import {User} from "../shared/api-models";
+import {SocketClients} from "../util/socket-clients";
 import {IRoom, RoomRepository} from "../models/room.model";
 import {IMessage, MessageRepository} from "../models/message.model";
 import {IUser, UserRepository} from "../models/user.model";
-var _ = require('lodash');
+let _ = require('lodash');
 
 export class ChatController {
 
@@ -18,7 +17,7 @@ export class ChatController {
   private UserRepository: mongoose.Model<IUser>;
 
 
-  constructor() {
+  constructor(private SocketClients: SocketClients) {
     this.Article = mongoose.model("Article");
     this.MessageRepository = MessageRepository;
     this.RoomRepository = RoomRepository;

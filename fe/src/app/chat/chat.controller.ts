@@ -1,6 +1,7 @@
 import {ChatService} from './chat.service';
 import {PrincipalService} from "../login/principal.service";
-import { Message } from "../shared/api-models";
+import {ChatSocketService} from "./chat-socket.service";
+import {Message} from "../shared/api-models";
 
 
 export class ChatController {
@@ -11,104 +12,58 @@ export class ChatController {
   public users: any[];
   public rooms: any[];
   public currentRoom: any; //room object
-  public connected: boolean;
 
-  private MySocket: SocketIOClient.Socket;
 
   /* @ngInject */
-  constructor(private ChatService: ChatService, private toastr: any, MySocket: SocketIOClient.Socket) {
-    this.MySocket = MySocket;
+  constructor(private ChatService: ChatService, private toastr: any, private ChatSocketService: ChatSocketService) {
 
     this.logMessages = [];
     this.users = [];
     this.rooms = [];
-    this.activate(this.MySocket);
-  }
 
-  activate(socket: SocketIOClient.Socket) {
+    ChatSocketService.addMessageListener(this);
 
-    this.ChatService.getInitialData().then((data: any)=> {
+    ChatService.getInitialData().then((data: any)=> {
       this.users = data.users;
       this.rooms = data.rooms;
       this.onRoomSelected(this.rooms[0]); //first room
-
-    });
-
-    // Whenever the server emits 'login', log the login message
-    socket.on('login', (data) => {
-      this.connected = true;
-      // Display the welcome message
-      this.log("Welcome to Socket.IO Chat – ");
-      this.addParticipantsMessage(data);
-    });
-
-    socket.on('disconnected', () => {
-      this.connected = false;
-    });
-      // Whenever the server emits 'new message', update the chat body
-    socket.on('new message', (data: Message) => {
-      this.addChatMessage(data);
-    });
-
-    // Whenever the server emits 'user joined', log it in the chat body
-    socket.on('user joined', (data) => {
-      this.log(data.username + ' joined');
-      this.addParticipantsMessage(data);
-    });
-
-    // Whenever the server emits 'user left', log it in the chat body
-    socket.on('user left', (data) => {
-      this.log(data.username + ' left');
-      this.addParticipantsMessage(data);
-      //removeChatTyping(data);
-    });
-
-    // Whenever the server emits 'typing', show the typing message
-    socket.on('typing', (data) => {
-      //addChatTyping(data);
-    });
-
-    // Whenever the server emits 'stop typing', kill the typing message
-    socket.on('stop typing', (data) => {
-      //removeChatTyping(data);
-    });
-    socket.on('model error', (data) => {
-      console.error(data);
     });
   }
-
 
   addChatMessage(data: Message) {
     this.ChatService.prepareMessage(data); //this should come from the service -> data is 'prepared' there
     let allRooms = this.ChatService.getRooms();
     let room;
 
-    if(room = allRooms[data.room]){
-      if(room == this.currentRoom){
+    if (room = allRooms[data.room]) {
+      if (room == this.currentRoom) {
         //animate?
-      }else {
-        //add some pending message somewhere
+      } else {
+        //add some not read message somewhere
       }
-      room.messages.push(data);
-    }else {
+      room.messages.push(data); //@TODO: sort
+    } else {
       this.ChatService.getRoomById(data.room).then((room) => {
         this.rooms.push(room);
       });
-      //console.log('Create new room!!!');
+      //console.log('Created new room!!!');
     }
 
   }
 
-  onRoomSelected(room: any){
-    if(this.currentRoom == room) {
+  onRoomSelected(room: any) {
+    if (this.currentRoom == room) {
       return;
     }
     this.currentRoom = room;
     this.currentRoom.messages = this.currentRoom.messages || [];
     //this.ChatService.prepareRoom(this.currentRoom);
-    this.log('room selected');
   }
 
+  userStatusChanged(userId, status) {
+    //_.find(this.users, {userId: userId}).online = status; //needs to be faster?
+    this.ChatService.getUsers()[userId].online = status; //it's the same object as in our list!
+  }
 
   get() {
     this.ChatService.getArticles().then((d: any) => {
@@ -116,13 +71,5 @@ export class ChatController {
     });
   }
 
-  log(message: string, options?) {
-    this.logMessages.push(message);
-  }
-
-  addParticipantsMessage(message: string) {
-    console.log('wtf is this ' + message);
-    //this.participantMessages.push(message);
-  }
 
 }

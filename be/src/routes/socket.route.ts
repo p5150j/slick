@@ -16,13 +16,34 @@ export class SocketRoute {
 
   public activate(): void {
 
-    // usernames which are currently connected to the chat
-    let numUsers = 0;
-    //let data: { [key: string]: SocketData; } = {};
+    //
+    //this.io.use(function(socket, next){
+    //  console.log('-----------------------------------------------------');
+    //  console.log(socket.request);
+    //  next();
+    //  //if (socket.request.headers.cookie) return next();
+    //  //next(new Error('Authentication error'));
+    //});
 
     this.io.on('connection', (socket: SocketIO.Socket)=> {
 
       console.log('a user connected');
+
+      let onevent = socket['onevent'];
+      socket['onevent'] = function (packet) {
+        let eventName = packet.data[0];
+        if(eventName !== 'login' && !socket['userId']) {
+          packet.data.unshift('not auth'); //this will be called
+        }
+        onevent.call (this, packet);
+      };
+
+      socket.on('not auth', function() {
+
+        socket.emit('not auth', {
+          message: arguments
+        });
+      });
 
       // when the client emits 'new message', this listens and executes
       socket.on('new message', (data) => {
@@ -45,7 +66,11 @@ export class SocketRoute {
 
       });
 
-      // when the user disconnects.. perform this
+
+      socket.on('disconnect', () => {
+        socket['userId'] && this.SocketController.logout(socket['userId']);
+      });
+
       socket.on('logout', () => {
 
         return this.sendErrorsBack(socket, this.SocketController.logout(socket['userId']));

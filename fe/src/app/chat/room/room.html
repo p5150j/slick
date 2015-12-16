@@ -35,7 +35,9 @@
 
     <md-card style="">
     <md-input-container>
-      <input type="text" ng-model="vm.currentMessage" ng-keyup="$event.keyCode == 13 && vm.sendMessage()" placeholder="Type your message.." autofocus>
+      <input type="text"
+             ng-disabled="!vm.isConnected()"
+             ng-model="vm.currentMessage" ng-keyup="$event.keyCode == 13 && vm.sendMessage()" placeholder="Type your message.." autofocus>
     </md-input-container>
       </md-card>
 

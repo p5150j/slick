@@ -6,7 +6,6 @@ import { ChatSocketService } from './chat-socket.service';
 import { Sidebar } from './sidebar/sidebar.directive'
 import { Messages } from './room/messages/messages.directive'
 import { Room } from './room/room.directive'
-import { runBlock } from './socket.auth.run'
 
 var io: any = <any>require('socket.io-client');
 
@@ -19,7 +18,6 @@ angular.module('slick.chat', [
   .directive('slSidebar', Sidebar)
   .directive('slMessages', Messages)
   .directive('slRoom', Room)
-  .run(runBlock)
 
 
   .factory('MySocket', ['socketFactory', (socketFactory: any /*socketUrl: string*/) => {

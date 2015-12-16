@@ -5,6 +5,7 @@
     <!--<md-checkbox ng-model="chann.selected"></md-checkbox>-->
     <!--<md-icon md-svg-icon="cached"></md-icon>-->
     <p>{{::room.displayName}}</p>
+
     <!--<ng-md-icon icon="..." style="fill: ..." size="..."></ng-md-icon>-->
     <ng-md-icon aria-label="Chat" icon="{{vm.getStatusIcon(room)}}" ng-click="vm.morph(room, $event)"></ng-md-icon>
   </md-list-item>
@@ -18,6 +19,7 @@
   </small>
   <md-list-item ng-repeat="user in vm.slUsers" ng-click="vm.onUserSelected(user)">
     <p>{{user.username}}</p>
+    {{user.online?'online':'offline'}}
   </md-list-item>
 </md-list>
 

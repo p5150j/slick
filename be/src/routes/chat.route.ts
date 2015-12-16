@@ -1,15 +1,10 @@
-"use strict";
-/// <reference path="../../typings/tsd.d.ts" />
+
 import express = require("express");
 import {ChatController} from "../controllers/chat.controller";
 
 export class ChatRoute {
 
-  private controller: ChatController;
-
-  constructor() {
-    this.controller = new ChatController(); //@TODO: inject
-  }
+  constructor(private controller: ChatController ) { }
 
   public appendRoutes(router: express.Router): void {
 

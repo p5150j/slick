@@ -12,19 +12,19 @@
       "commit": "b2d17b5dad042e293e77d09f2a30d281325cb606"
     },
     "node/node.d.ts": {
-      "commit": "fb2b3b1e068c9ff7d8f9b0851c08d37d96c95c38"
+      "commit": "8ea42cd8bb11863ed6f242d67c502288ebc45a7b"
     },
     "rx/rx-lite.d.ts": {
       "commit": "b2d17b5dad042e293e77d09f2a30d281325cb606"
     },
     "serve-static/serve-static.d.ts": {
-      "commit": "fb2b3b1e068c9ff7d8f9b0851c08d37d96c95c38"
+      "commit": "8ea42cd8bb11863ed6f242d67c502288ebc45a7b"
     },
     "mime/mime.d.ts": {
-      "commit": "fb2b3b1e068c9ff7d8f9b0851c08d37d96c95c38"
+      "commit": "8ea42cd8bb11863ed6f242d67c502288ebc45a7b"
     },
     "express/express.d.ts": {
-      "commit": "fb2b3b1e068c9ff7d8f9b0851c08d37d96c95c38"
+      "commit": "8ea42cd8bb11863ed6f242d67c502288ebc45a7b"
     },
     "body-parser/body-parser.d.ts": {
       "commit": "36c6ce86fb64bafb28ec95dc78c6b98228b45c8d"
@@ -55,6 +55,9 @@
     },
     "passport-local/passport-local.d.ts": {
       "commit": "fb2b3b1e068c9ff7d8f9b0851c08d37d96c95c38"
+    },
+    "compression/compression.d.ts": {
+      "commit": "8ea42cd8bb11863ed6f242d67c502288ebc45a7b"
     }
   }
 }
