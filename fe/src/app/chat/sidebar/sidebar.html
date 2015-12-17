@@ -4,7 +4,7 @@
   <md-list-item ng-repeat="room in vm.slRooms" ng-click="vm.onRoomSelected(room)" id="{{'room' + room._id }}">
     <!--<md-checkbox ng-model="chann.selected"></md-checkbox>-->
     <!--<md-icon md-svg-icon="cached"></md-icon>-->
-    <p>{{::room.displayName}}</p>
+    <p>{{::room.displayName}} <span class="pending-count">({{room.pending}})</span></p>
 
     <!--<ng-md-icon icon="..." style="fill: ..." size="..."></ng-md-icon>-->
     <ng-md-icon aria-label="Chat" icon="{{vm.getStatusIcon(room)}}" ng-click="vm.morph(room, $event)"></ng-md-icon>

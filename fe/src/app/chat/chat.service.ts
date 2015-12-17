@@ -72,7 +72,7 @@ export class ChatService {
       });
   }
 
-    getRoomById(roomId: string): angular.IPromise<Room> {
+  getRoomById(roomId: string): angular.IPromise<Room> {
     if (this.RoomsMap[roomId]) {
       return this.$q.when(this.RoomsMap[roomId]);
     } else {
@@ -128,6 +128,7 @@ export class ChatService {
       room.usersObj[user] = this.UserMap[user];
     });
 
+    room.pending = 0;
     if (room.type == ROOM_TYPES.IM) { //IM rooms are named after the other user
       let otherUser = room.users[0] == me ? room.users[1] : room.users[0];
       room.displayName = this.UserMap[otherUser].username;

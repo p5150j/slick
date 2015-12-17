@@ -16,6 +16,7 @@ export class Room {
   //populated FE---------------
   usersObj: {[user: string]:User};
   displayName: string;
+  pending:number;
 }
 
 export class Message {
