@@ -70,7 +70,7 @@ export class SocketController {
     //  --numUsers;
 
     // echo globally that this client has left
-    this.socketClients.broadcastUserStatusChanged(userId, true);
+    this.socketClients.broadcastUserStatusChanged(userId, false);
 
     return new Promise().resolve(null, true);
   }

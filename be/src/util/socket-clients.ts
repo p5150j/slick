@@ -39,6 +39,7 @@ export class SocketClients {
 
 
   broadcastUserStatusChanged(user, online: boolean) {
+
     this.io.sockets.emit('user status', {
       user: user,
       online: online

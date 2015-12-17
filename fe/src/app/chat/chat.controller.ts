@@ -39,11 +39,13 @@ export class ChatController {
       if (room == this.currentRoom) {
         //animate?
       } else {
-        //add some not read message somewhere
+        room.pending++;
       }
+
       room.messages.push(data); //@TODO: sort
     } else {
       this.ChatService.getRoomById(data.room).then((room) => {
+        room.pending++;
         this.rooms.push(room);
       });
       //console.log('Created new room!!!');
@@ -55,6 +57,7 @@ export class ChatController {
     if (this.currentRoom == room) {
       return;
     }
+    room.pending = 0;
     this.currentRoom = room;
     this.currentRoom.messages = this.currentRoom.messages || [];
     //this.ChatService.prepareRoom(this.currentRoom);
