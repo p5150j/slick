@@ -22,18 +22,24 @@
     .pending-count {
       float: right;
       margin-right: 10px;
-      background-color: chartreuse;
+      color: chartreuse;
       font-size: 1.2em;
     }
 
   }
   .right-panel {
-    height: auto;
-    overflow: auto;
+    height: 100vh;
+    overflow: hidden;
     background-color: #ECECEC;
 
+    md-toolbar {
+      background: #f6f6f6 !important;
+      color: #202020 !important;
+      z-index: 3;
+    }
+
     main {
-      overflow-y: scroll;
+      overflow-y: auto;
     }
 
     sl-messages {

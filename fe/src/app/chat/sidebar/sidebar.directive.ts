@@ -2,6 +2,7 @@ import {ChatService} from "../chat.service";
 import {Room, User} from "../../shared/api-models";
 
 var tpl = require('./sidebar.html');
+var userModaltpl = require('./user-selection.dialog.html');
 
 /** @ngInject */
 export function Sidebar(): angular.IDirective {
@@ -23,12 +24,12 @@ export function Sidebar(): angular.IDirective {
 
 }
 
-function linkFunction(scope, element, attrs, controller){
+function linkFunction(scope, element, attrs, controller) {
   let selectedRoomClass = 'selected-room';
   scope.$watch('vm.slSelectedRoom', (room) => {
     controller.$timeout(() => {
       element.find('.' + selectedRoomClass).removeClass(selectedRoomClass);
-      room && angular.element('#room'+room._id).addClass(selectedRoomClass);
+      room && angular.element('#room' + room._id).addClass(selectedRoomClass);
     });
   });
 }
@@ -41,7 +42,7 @@ export class SlSidebarController {
   public slUsers: User[];
   public slSelectedRoom: Room;
 
-  constructor(private ChatService: ChatService, public $timeout: angular.ITimeoutService) {
+  constructor(private ChatService: ChatService, public $timeout: angular.ITimeoutService, public $mdDialog: any, public $mdMedia: any) {
     //this.ChatService.getChannels().then((response: any[]) => {
     //  this.channels = response;
     //})
@@ -56,13 +57,13 @@ export class SlSidebarController {
     this.ChatService.getRoomIM(user)
       .then((room) => {
         let roomIx = _.findIndex(this.slRooms, {_id: room._id});
-        if(roomIx >= 0) {
+        if (roomIx >= 0) {
           this.slRooms[roomIx] = room; //overwrite just in case
-        }else {
+        } else {
           this.slRooms.unshift(room);
         }
         this.onRoomSelected(room);
-    });
+      });
   };
 
 
@@ -86,4 +87,49 @@ export class SlSidebarController {
       return channel.status = 'online'
     }
   }
+
+  pickUser = (ev) => {
+    var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+    this.$mdDialog.show({
+        controller: DialogController,
+        controllerAs: 'vm',
+
+        templateUrl: userModaltpl,
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: true,
+        bindToController: true,
+        fullscreen: useFullScreen
+      })
+      .then(function (answer) {
+        //$scope.status = 'You said the information was "' + answer + '".';
+      }, function () {
+        //$scope.status = 'You cancelled the dialog.';
+      });
+
+  };
+}
+
+/** @ngInject */
+class DialogController {
+
+  public users;
+
+  /** @ngInject */
+  constructor(private $mdDialog: any, ChatService: ChatService) {
+    this.users = ChatService.getUsers();
+  }
+
+  hide = ()=> {
+    this.$mdDialog.hide();
+  };
+
+  cancel = ()=> {
+    this.$mdDialog.cancel();
+  };
+
+  answer = (answer) => {
+    this.$mdDialog.hide(answer);
+  };
+
 }

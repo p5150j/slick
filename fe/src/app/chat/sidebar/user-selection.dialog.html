@@ -1,0 +1,8 @@
+<md-list ng-cloak>
+  <md-subheader class="md-no-sticky">All Users</md-subheader>
+
+  <md-list-item ng-repeat="user in vm.users" ng-click="vm.onUserSelected(user)">
+    <p>{{user.username}}</p>
+    {{user.online?'online':'offline'}}
+  </md-list-item>
+</md-list>

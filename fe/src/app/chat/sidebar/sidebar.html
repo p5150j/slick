@@ -1,6 +1,14 @@
-<md-list ng-cloak>
-  <md-subheader class="md-no-sticky">Conversations</md-subheader>
+<md-toolbar class="md-primary">
+  <div class="md-toolbar-tools">
+    <h3 >Conversations </h3>
+    <span flex></span>
+    <md-button class="md-icon-button md-raised pull-right" ng-click="vm.pickUser($event)">
+      <ng-md-icon aria-label="search user" icon="search"></ng-md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
 
+<md-list ng-cloak>
   <md-list-item ng-repeat="room in vm.slRooms" ng-click="vm.onRoomSelected(room)" id="{{'room' + room._id }}">
     <!--<md-checkbox ng-model="chann.selected"></md-checkbox>-->
     <!--<md-icon md-svg-icon="cached"></md-icon>-->
@@ -11,15 +19,4 @@
   </md-list-item>
 
   <md-divider></md-divider>
-
-  <md-subheader class="md-no-sticky">All Users</md-subheader>
-  <small>
-    note - this will show as a popup, we don't want to show this all the time - users with a history show above.
-    Now you can use it to create a room if it does not exist
-  </small>
-  <md-list-item ng-repeat="user in vm.slUsers" ng-click="vm.onUserSelected(user)">
-    <p>{{user.username}}</p>
-    {{user.online?'online':'offline'}}
-  </md-list-item>
 </md-list>
-
