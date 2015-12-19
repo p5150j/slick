@@ -1,5 +1,5 @@
 import {ChatService} from "../chat.service";
-import {Room, User} from "../../shared/api-models";
+import {Room, ROOM_TYPES, User} from "../../shared/api-models";
 
 var tpl = require('./sidebar.html');
 var userModaltpl = require('./user-selection.dialog.html');
@@ -14,8 +14,8 @@ export function Sidebar(): angular.IDirective {
     controllerAs: 'vm',
     scope: true,
     bindToController: {
-      slRooms: '=',
-      slUsers: '=',
+      //slRooms: '=',
+      //slUsers: '=',
       slSelectedRoom: '=',
       slOnRoomSelected: '&',
     },
@@ -39,19 +39,28 @@ export class SlSidebarController {
 
   public slOnRoomSelected: Function;
   public slRooms: Room[];
-  public slUsers: User[];
   public slSelectedRoom: Room;
+  public userRooms;
+  public groupRooms;
 
   constructor(private ChatService: ChatService, public $timeout: angular.ITimeoutService, public $mdDialog: any, public $mdMedia: any) {
-    //this.ChatService.getChannels().then((response: any[]) => {
-    //  this.channels = response;
-    //})
 
+    ChatService.addListener(this);
+    this.slRooms = _(ChatService.getRooms()).map(e => e).value(); //@separate into channels, users
+    //this.userRooms = _(ChatService.getRooms()).filter( e => e['type'] == ROOM_TYPES.IM ).map(e => e).value(); //@separate into channels, users
+    //this.groupRooms = _(ChatService.getRooms()).filter(e => e['type'] == ROOM_TYPES.GIM ).map(e => e).value(); //@separate into channels, users
   }
 
-  onRoomSelected = (room) => {
+  onRoomSelected = (room: Room) => {
     this.slOnRoomSelected({room: room});
+
   };
+
+  onNewRoom(room) {
+    this.slRooms.push(room);
+    //let r = room.type == ROOM_TYPES.IM ? this.userRooms: this.groupRooms;
+    //r.push(room);
+  }
 
   onUserSelected = (user) => {
     this.ChatService.getRoomIM(user)
@@ -66,28 +75,6 @@ export class SlSidebarController {
       });
   };
 
-
-  getStatusIcon(channel) {
-    if (channel.status == 'online') {
-      return 'message'
-    } else {
-      return 'accessibility'
-    }
-  }
-
-  morph(channel, event) { //just a mock to test the morph on click
-    var element = angular.element(event.target);
-    if (channel.status == 'online') {
-      element.removeClass('online');
-      element.addClass('offline');
-      return channel.status = 'offline'
-    } else {
-      element.removeClass('offline');
-      element.addClass('online');
-      return channel.status = 'online'
-    }
-  }
-
   pickUser = (ev) => {
     var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
     this.$mdDialog.show({
@@ -101,9 +88,10 @@ export class SlSidebarController {
         bindToController: true,
         fullscreen: useFullScreen
       })
-      .then(function (answer) {
+      .then((user) => {
+        this.onUserSelected(user);
         //$scope.status = 'You said the information was "' + answer + '".';
-      }, function () {
+      }, () => {
         //$scope.status = 'You cancelled the dialog.';
       });
 
@@ -128,8 +116,8 @@ class DialogController {
     this.$mdDialog.cancel();
   };
 
-  answer = (answer) => {
-    this.$mdDialog.hide(answer);
+  onUserSelected = (user) => {
+    this.$mdDialog.hide(user);
   };
 
 }

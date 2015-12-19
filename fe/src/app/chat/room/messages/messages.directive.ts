@@ -6,7 +6,7 @@ var tpl = require('./messages.html');
 export function Messages(): angular.IDirective {
 
   return {
-    restrict: 'E',
+    restrict: 'AE',
     scope: true,
     templateUrl: tpl,
     controller: SlMessagesController,

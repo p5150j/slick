@@ -1,4 +1,7 @@
 .sl-chat {
+  ng-md-icon {
+    line-height: 0;
+  }
 
   .left-panel {
     font-size: 11px;
@@ -8,43 +11,75 @@
     min-height: 100%;
     color: #eee;
     ng-md-icon {
+      float: right;
       fill: grey;
+
       &.online {
-        fill: green;
+        fill: mediumseagreen;
       }
-      &.offline {
-        fill: red;
+      &.gim {
+        fill: ghostwhite;
       }
     }
     .selected-room {
-      background-color: blue;
+      background-color: lightslategrey;
     }
     .pending-count {
       float: right;
       margin-right: 10px;
-      color: chartreuse;
+      color: ghostwhite;
       font-size: 1.2em;
     }
 
   }
   .right-panel {
+    position: relative;
     height: 100vh;
     overflow: hidden;
     background-color: #ECECEC;
 
+    .placeholder {
+      font-size: 40px;
+      text-align: center;
+      padding: 80px;
+    }
     md-toolbar {
       background: #f6f6f6 !important;
       color: #202020 !important;
       z-index: 3;
     }
+    .gim-users {
+      background: darkgrey;
+      position: absolute;
+      font-size: 14px;
+      z-index: 1;
+      width: 100%;
+
+      .gim-user {
+        padding: 2px 10px;
+        float: left;
+        margin: 3px 5px;
+        color: ghostwhite;
+      }
+    }
 
     main {
       overflow-y: auto;
+      background-color: white;
     }
 
     sl-messages {
       .pending-message {
         color: grey;
+      }
+    }
+
+    .message-input {
+      padding: 0 10px 10px 20px;
+      textarea {
+        width: calc(100% - 30px);
+        overflow: auto;
+        resize: none;
       }
     }
   }
@@ -197,6 +232,7 @@ p {
 }
 
 .chat {
+  margin-bottom: 5px;
   font-size: 12px;
   background: #fff;
 
@@ -207,7 +243,7 @@ p {
 
 .chat-history {
   /*  height: 300px;*/
-  padding: 8px 24px;
+  padding: 8px 24px 0px 24px;
   overflow-y: auto;
 }
 

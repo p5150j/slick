@@ -1,40 +1,23 @@
-<!--
-	<md-card style="margin-top: -11px;
-    height: 246px;">
-	   <md-card-content>
-	    style="    bottom: 72px;
-    height: 340px;
-    overflow: scroll;
-    position: fixed;"
-	   </md-card-content>
-	</md-card> -->
-	<md-card>
-	   <md-card-content >
-	      <div class="chat">
-	         <div class="chat-history animated " ng-repeat="msg in vm.slMessages">
-	            <div class="chat-message clearfix" ng-class="::{pending: !msg.date}">
-	               <img src="http://lorempixum.com/32/32/people" alt="" width="32" height="32">
-	               <div class="chat-message-content clearfix">
+  <div class="chat">
+    <div class="chat-history" ng-repeat="msg in vm.slMessages">
+      <div class="chat-message clearfix" ng-class="::{'pending': !msg.date, 'animated fadeIn': msg.date}">
+        <img src="http://lorempixum.com/32/32/people" alt="" width="32" height="32">
+
+        <div class="chat-message-content clearfix">
 	                  <span class="chat-time" ng-if="::msg.date">
 	                    sent on: {{::msg.date}}
 	                  </span>
                    <span class="chat-time" ng-if="::!msg.date">
 	                    Pending!
 	                  </span>
-	                  <h5>{{::msg.userObj.username}}</h5>
-	                  <p> {{::msg.text}}</p>
-	               </div>
-	            </div>
-	            <hr>
-	         </div>
+          <h5>{{::msg.userObj.username}}</h5>
+
+          <p> {{::msg.text}}</p>
         </div>
-	   </md-card-content>
-	</md-card>
-	    <!--<p ng-if="vm.sentMessage" class="anim-fade pending-message">{{vm.pendingMessage.text}}</p>-->
-<link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
-
-
+      </div>
+      <hr>
+    </div>
+  </div>
 
 
 

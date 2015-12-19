@@ -16,21 +16,26 @@ export class RoomController {
               private $scope: angular.IScope
   ) {
 
-
     this.isConnected = ChatSocketService.isConnected;
 
 
     ChatService.getRoomById($stateParams['roomId']).then((room) => {
       this.slRoom = room;
+      $scope['chatVm'].onRoomLoaded(room);
     });
+
+
 
     //change this to some event system...
     $scope.$watch('vm.slRoom.messages.length', (newVal) => {
+
+      this.slRoom.pending = 0;
       let $element:any = angular.element;
       $element = $element.find('main')[0];
 
       $timeout(() => {
         $element.scrollTop = $element.scrollHeight;
+
       });
     });
   }
@@ -61,6 +66,7 @@ export class RoomController {
     this.ChatSocketService.sendMessage(pendingMessage)
       .then((m) => { //someone will add the message for us
         _.remove(this.slRoom.messages, pendingMessage);
+        this.slRoom.pending = 0;
       });
   }
 }

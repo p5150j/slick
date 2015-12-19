@@ -1,39 +1,46 @@
-<div layout="column" layout-fill>
+<div layout="column" layout-fill ng-init="view = {}">
   <md-toolbar class="md-whiteframe-z1">
     <div class="md-toolbar-tools">
-      <md-button class="md-raised md-icon-button" aria-label="Show Menu" ng-click="chatVm.toggleToolbar()" ng-show="!$mdMedia('gt-sm')">
+      <md-button class="md-raised md-icon-button" aria-label="Show Menu" ng-click="chatVm.toggleToolbar()"
+                 ng-show="!$mdMedia('gt-sm')">
         <ng-md-icon aria-label="Menu" icon="menu"></ng-md-icon>
       </md-button>
       <h2>
-        <span>Slick- {{::vm.slRoom.displayName}}</span>
-        <small ng-click="showUsers = !showUsers"> <ng-md-icon aria-label="Users" icon="people"></ng-md-icon> {{::vm.slRoom.users.length}} participants</small>
-        <div ng-if="showUsers">
-          <span ng-repeat="u in vm.slRoom.usersObj"> {{::u.username}}</span>
-        </div>
+        <span>{{::vm.slRoom.displayName}}</span>
       </h2>
       <span flex></span>
+
+      <div ng-if="::(vm.slRoom.type == 'GIM')">
+        <a ng-click="alert('click'); view.showUsers = !view.showUsers" href="">
+          <small>
+            <ng-md-icon aria-label="Users" class="pull-left" icon="people"></ng-md-icon>
+            {{::vm.slRoom.users.length}}
+          </small>
+        </a>
+      </div>
+
       <md-button class="md-icon-button" aria-label="More">
         <ng-md-icon aria-label="More" icon="more_vert"></ng-md-icon>
-
       </md-button>
     </div>
   </md-toolbar>
-
-  <!--<sl-room layout="column"sl-room="chatVm.currentRoom"></sl-room>-->
-
-  <main layout="row" flex>
-    <sl-messages flex="100" sl-messages="::chatVm.currentRoom.messages"></sl-messages>
+  <div ng-if="view.showUsers" class="gim-users animated-slideInDown">
+    <span ng-repeat="u in vm.slRoom.usersObj" class="gim-user"> {{::u.username}}</span>
+  </div>
+  <main flex class="animated-fadeIn">
+    <md-content layout-padding flex layout="column" sl-messages="::vm.slRoom.messages"></md-content>
   </main>
 
 
   <footer>
-    <md-card style="">
-      <md-input-container>
-        <input type="text"
-               ng-disabled="!vm.isConnected()"
-               ng-model="vm.currentMessage" ng-keyup="$event.keyCode == 13 && vm.sendMessage()"
-               placeholder="Type your message.." autofocus>
-      </md-input-container>
-    </md-card>
+
+    <md-content class="message-input">
+      <!--//@TODO - make this autoresizeable-->
+      <textarea type="text"
+                rows="3"
+          ng-disabled="!vm.isConnected()"
+          ng-model="vm.currentMessage" ng-keyup="$event.keyCode == 13 && vm.sendMessage()"
+          autofocus></textarea>
+    </md-content>
   </footer>
 </div>

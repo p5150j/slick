@@ -11,7 +11,7 @@ export function AuthInterceptor(PrincipalService: PrincipalService, $q: angular.
       if (req.url.indexOf(apiUrl + 'login') !== 0 && req.url.indexOf(apiUrl) === 0) {
         if (PrincipalService.isAuthenticated()) {
           var token = PrincipalService.getToken();
-          req.headers.Authorization = 'bearer ' + token;
+          req.headers['Authorization'] = 'bearer ' + token;
         } else {
           var stateService = $injector.get('$state'); //angular bug, need to use injector
           stateService.go('auth');

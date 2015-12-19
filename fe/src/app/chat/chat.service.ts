@@ -7,13 +7,13 @@ export class ChatService {
   //this could be local storage + api layer in the future
   private UserMap: Dictionary<User>;
   private RoomsMap: Dictionary<Room>;
+  private eventListener; //@TODO: make it more generic
 
   /** @ngInject */
   constructor(private $log: angular.ILogService, private $http: angular.IHttpService, private $q: angular.IQService,
               private PrincipalService: PrincipalService,
               private apiUrl: string,
               private authUrl: string) {
-
 
   }
 
@@ -46,7 +46,7 @@ export class ChatService {
 
   getInitialData(): angular.IPromise<any[]> {
     return this.$http.get(this.apiUrl + 'init')
-      .then((response: {data: {users:User[], onlineUsers:string[], rooms:Room[]}}): any => {
+      .then((response: {data: {users:User[], onlineUsers:string[], rooms:Room[]}}) => {
         var data = response.data;
 
         //data.users = _.indexBy(data.users, '_id');
@@ -103,9 +103,7 @@ export class ChatService {
         this.$log.error('Couldnt get a room.\n', error.data);
         return this.$q.reject(error);
       });
-
   }
-
 
   prepareRoom(room: Room): void {
     //@TODO: make it check if it's already prepared
@@ -132,6 +130,7 @@ export class ChatService {
     if (room.type == ROOM_TYPES.IM) { //IM rooms are named after the other user
       let otherUser = room.users[0] == me ? room.users[1] : room.users[0];
       room.displayName = this.UserMap[otherUser].username;
+      room.userObj = this.UserMap[otherUser];
     } else {
       room.displayName = room.name;
     }
@@ -140,5 +139,30 @@ export class ChatService {
   prepareMessage(message: Message): void {
     message.userObj = this.UserMap[message.user];
     message.date = new Date(message.ts).toLocaleString(); //@TODO use other format
+  }
+
+  addChatMessage(data: Message) {
+    this.prepareMessage(data);
+    let room;
+    if (room = this.RoomsMap[data.room]) {
+      //if (room == this.currentRoom) {
+      //} else {
+      room.pending++;
+      //}
+
+      room.messages.push(data); //@TODO: sort
+    } else {
+      this.getRoomById(data.room).then((room) => {
+        this.eventListener.onNewRoom(room);
+        room.pending++;
+      });
+    }
+  }
+  userStatusChanged(userId, status) {
+    this.UserMap[userId].online = status;
+  }
+
+  addListener(listener: any): void {
+    this.eventListener = listener;
   }
 }

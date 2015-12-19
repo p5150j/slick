@@ -17,6 +17,7 @@ export class Room {
   usersObj: {[user: string]:User};
   displayName: string;
   pending:number;
+  userObj: User; //only IM
 }
 
 export class Message {
