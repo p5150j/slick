@@ -1,44 +1,39 @@
-<!-- <header>
-  <md-toolbar>
+<div layout="column" layout-fill>
+  <md-toolbar class="md-whiteframe-z1">
     <div class="md-toolbar-tools">
-      <h3>Slick- {{vm.slRoom.name}}</h3>
+      <md-button class="md-raised md-icon-button" aria-label="Show Menu" ng-click="chatVm.toggleToolbar()" ng-show="!$mdMedia('gt-sm')">
+        <ng-md-icon aria-label="Menu" icon="menu"></ng-md-icon>
+      </md-button>
+      <h2>
+        <span>Slick- {{::vm.slRoom.displayName}}</span>
+        <small ng-click="showUsers = !showUsers"> <ng-md-icon aria-label="Users" icon="people"></ng-md-icon> {{::vm.slRoom.users.length}} participants</small>
+        <div ng-if="showUsers">
+          <span ng-repeat="u in vm.slRoom.usersObj"> {{::u.username}}</span>
+        </div>
+      </h2>
       <span flex></span>
+      <md-button class="md-icon-button" aria-label="More">
+        <ng-md-icon aria-label="More" icon="more_vert"></ng-md-icon>
+
+      </md-button>
     </div>
   </md-toolbar>
-  <span>this room has {{vm.slRoom.users.length}} users - in slRoom.usersObj you have the names! </span>
-</header> -->
- <md-toolbar>
-      <div class="md-toolbar-tools">
-        <md-button class="md-icon-button" aria-label="Settings">
-          <ng-md-icon aria-label="Menu" icon="menu"></ng-md-icon>
-        </md-button>
-        <h2>
-          <span>Slick- {{::vm.slRoom.displayName}}</span>
-          <small ng-click="showUsers = !showUsers"> <ng-md-icon aria-label="Users" icon="people"></ng-md-icon> {{::vm.slRoom.users.length}} participants</small>
-          <div ng-if="showUsers">
-          <span ng-repeat="u in vm.slRoom.usersObj"> {{::u.username}}</span>
-          </div>
-        </h2>
-        <span flex></span>
-        <md-button class="md-icon-button" aria-label="More">
-          <ng-md-icon aria-label="More" icon="more_vert"></ng-md-icon>
 
-        </md-button>
-      </div>
-    </md-toolbar>
-<main class='md-padding' layout="row" flex>
-  <sl-messages flex="100" sl-messages="::vm.slRoom.messages"></sl-messages>
-</main>
+  <!--<sl-room layout="column"sl-room="chatVm.currentRoom"></sl-room>-->
 
-<footer>
+  <main layout="row" flex>
+    <sl-messages flex="100" sl-messages="::chatVm.currentRoom.messages"></sl-messages>
+  </main>
 
 
+  <footer>
     <md-card style="">
-    <md-input-container>
-      <input type="text"
-             ng-disabled="!vm.isConnected()"
-             ng-model="vm.currentMessage" ng-keyup="$event.keyCode == 13 && vm.sendMessage()" placeholder="Type your message.." autofocus>
-    </md-input-container>
-      </md-card>
-
-</footer>
+      <md-input-container>
+        <input type="text"
+               ng-disabled="!vm.isConnected()"
+               ng-model="vm.currentMessage" ng-keyup="$event.keyCode == 13 && vm.sendMessage()"
+               placeholder="Type your message.." autofocus>
+      </md-input-container>
+    </md-card>
+  </footer>
+</div>

@@ -1,53 +1,38 @@
 import {Room, Message} from "../../shared/api-models";
 import {ChatSocketService} from "../chat-socket.service";
-
-var tpl = require('./room.html');
-
+import {ChatService} from "../chat.service";
 
 /** @ngInject */
-export function Room(): angular.IDirective {
-
-  return {
-    restrict: 'E',
-    scope: {},
-    templateUrl: tpl,
-    controller: SlRoomController,
-    controllerAs: 'vm',
-    bindToController: {
-      slRoom: '='
-    },
-    link: linkFunction
-
-  };
-
-
-  function linkFunction(scope, element, attrs, controller) {
-
-    element.on("$destroy", function () {
-      scope.$destroy();
-    });
-    scope.$watch('vm.slRoom.messages.length', (newVal) => {
-      let $element = element.find('main');
-      controller.$timeout(() => {
-        $element[0].scrollTop = $element[0].scrollHeight;
-      });
-    });
-  }
-}
-
-/** @ngInject */
-export class SlRoomController {
+export class RoomController {
 
   public currentMessage: string;
   public slRoom: Room; //room
   public isConnected: Function;
 
   constructor(private ChatSocketService: ChatSocketService,
-              public $timeout: angular.ITimeoutService) {
-    //this.slRoom.usersObj
+              private ChatService: ChatService,
+              private $stateParams: angular.ui.IStateParamsService,
+              public $timeout: angular.ITimeoutService,
+              private $scope: angular.IScope
+  ) {
+
 
     this.isConnected = ChatSocketService.isConnected;
 
+
+    ChatService.getRoomById($stateParams['roomId']).then((room) => {
+      this.slRoom = room;
+    });
+
+    //change this to some event system...
+    $scope.$watch('vm.slRoom.messages.length', (newVal) => {
+      let $element:any = angular.element;
+      $element = $element.find('main')[0];
+
+      $timeout(() => {
+        $element.scrollTop = $element.scrollHeight;
+      });
+    });
   }
 
 

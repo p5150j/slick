@@ -12,6 +12,14 @@ let apiUrl = API_URL + '';
 let authUrl = AUTH_URL + '';
 //let socketUrl = SOCKET_URL ;
 
+
+require('./shared/api-models.ts');
+// load all other modules @TODO: refactor
+require('./chat/chat.module');
+require('./login/login.module');
+require('./components/util/kcd-recompile.directive');
+
+console.log('loading main');
 angular.module('slick', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria', 'ui.router',
     'ngMaterial', 'ngMdIcons', 'toastr',
     'slick.login',
@@ -30,10 +38,3 @@ angular.module('slick', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngM
   .controller('MainController', MainController)
   .directive('acmeNavbar', acmeNavbar)
 ;
-
-require('./shared/api-models.ts');
-// load all other modules @TODO: refactor
-require('./chat/chat.module');
-require('./login/login.module');
-require('./components/util/kcd-recompile.directive');
-

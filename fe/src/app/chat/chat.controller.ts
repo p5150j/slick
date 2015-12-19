@@ -2,6 +2,7 @@ import {ChatService} from './chat.service';
 import {PrincipalService} from "../login/principal.service";
 import {ChatSocketService} from "./chat-socket.service";
 import {Message} from "../shared/api-models";
+import {Room} from "../shared/api-models";
 
 
 export class ChatController {
@@ -15,20 +16,34 @@ export class ChatController {
 
 
   /* @ngInject */
-  constructor(private ChatService: ChatService, private toastr: any, private ChatSocketService: ChatSocketService) {
+  constructor(private ChatService: ChatService,
+              private ChatSocketService: ChatSocketService,
+              private $state: angular.ui.IStateService,
+              private toastr: any,
+              private $mdMedia,
+              private $mdSidenav: any,
+              $rootScope,
+              initialData
+  ) {
 
     this.logMessages = [];
     this.users = [];
     this.rooms = [];
 
+    $rootScope.$mdMedia = $mdMedia;
+
     ChatSocketService.addMessageListener(this);
 
-    ChatService.getInitialData().then((data: any)=> {
-      this.users = data.users;
-      this.rooms = data.rooms;
-      this.onRoomSelected(this.rooms[0]); //first room
-    });
+    //ChatService.getInitialData().then((initialData: any)=> {
+      this.users = initialData.users;
+      this.rooms = initialData.rooms;
+    //});
   }
+
+  toggleToolbar = () => {
+    this.$mdSidenav('left')
+      .toggle()
+  };
 
   addChatMessage(data: Message) {
     this.ChatService.prepareMessage(data); //this should come from the service -> data is 'prepared' there
@@ -53,14 +68,13 @@ export class ChatController {
 
   }
 
-  onRoomSelected(room: any) {
+  onRoomSelected(room: Room) {
     if (this.currentRoom == room) {
       return;
     }
     room.pending = 0;
     this.currentRoom = room;
-    this.currentRoom.messages = this.currentRoom.messages || [];
-    //this.ChatService.prepareRoom(this.currentRoom);
+    this.$state.go('chat.room', {'roomId': room._id});
   }
 
   userStatusChanged(userId, status) {
