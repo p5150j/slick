@@ -2,7 +2,7 @@
   <md-toolbar class="md-whiteframe-z1">
     <div class="md-toolbar-tools">
       <md-button class="md-raised md-icon-button" aria-label="Show Menu" ng-click="chatVm.toggleToolbar()"
-                 ng-show="!$mdMedia('gt-sm')">
+                 ng-show="!$mdMedia('gt-xs')">
         <ng-md-icon aria-label="Menu" icon="menu"></ng-md-icon>
       </md-button>
       <h2>
@@ -27,8 +27,9 @@
   <div ng-if="view.showUsers" class="gim-users animated-slideInDown">
     <span ng-repeat="u in vm.slRoom.usersObj" class="gim-user"> {{::u.username}}</span>
   </div>
-  <main flex class="animated-fadeIn">
-    <md-content layout-padding flex layout="column" sl-messages="::vm.slRoom.messages"></md-content>
+
+  <main flex class="animated-fadeIn" sl-messages="::vm.slRoom.messages">
+    <!--<div layout-padding flex layout="column" ></div>-->
   </main>
 
 
@@ -37,10 +38,9 @@
     <md-content class="message-input">
       <!--//@TODO - make this autoresizeable-->
       <textarea type="text"
-                rows="3"
           ng-disabled="!vm.isConnected()"
           ng-model="vm.currentMessage" ng-keyup="$event.keyCode == 13 && vm.sendMessage()"
-          autofocus></textarea>
+          ></textarea>
     </md-content>
   </footer>
 </div>

@@ -12,7 +12,7 @@ function initialLoginCheck($state: angular.ui.IStateService, PrincipalService: P
     $log.debug('user is not authenticated');
     if ($state.current.name != 'auth') {
       console.log('DENY : Redirecting to Login');
-      event.preventDefault();
+      //event.preventDefault();
       $state.go('auth');
     }
   }

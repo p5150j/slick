@@ -13,8 +13,7 @@ export class RoomController {
               private ChatService: ChatService,
               private $stateParams: angular.ui.IStateParamsService,
               public $timeout: angular.ITimeoutService,
-              private $scope: angular.IScope
-  ) {
+              private $scope: angular.IScope) {
 
     this.isConnected = ChatSocketService.isConnected;
 
@@ -24,22 +23,20 @@ export class RoomController {
       $scope['chatVm'].onRoomLoaded(room);
     });
 
-
-
     //change this to some event system...
     $scope.$watch('vm.slRoom.messages.length', (newVal) => {
-
-      this.slRoom.pending = 0;
-      let $element:any = angular.element;
-      $element = $element.find('main')[0];
-
       $timeout(() => {
-        $element.scrollTop = $element.scrollHeight;
-
-      });
+        this.scrollDown();
+      }, 50);
     });
   }
 
+  scrollDown = () => {
+    let $element: any = angular.element;
+    $element = $element.find('main')[0];
+    $element.scrollTop = $element.scrollHeight;
+    this.slRoom.pending = 0;
+  };
 
 
   // Sends a chat message
