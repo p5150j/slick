@@ -48,19 +48,19 @@ export class SocketController {
 
 
   login(accessToken: string, socket: SocketIO.Socket): Promise<any> {
-    return this.UserRepository.findOne({token: accessToken}, (err, user:IUser) => {
-      if (err || !user) {
-        return socket.disconnect(true);
-      }
-      var userId: string = <any>user._id;
 
-      socket['userId'] = userId;
-      console.log('logged into socket -', userId + '-' + user.username);
+    return this.UserRepository.findOne({token: accessToken}).lean().exec().then(
+      (user: IUser)=> {
+        if(!user) {return new mongoose.Promise().reject('user not found');}
 
-      this.socketClients.confirmLogin(userId);
-      this.socketClients.broadcastUserStatusChanged(userId, true);
+        var userId: string = <any>user._id;
 
-    }).lean().exec();
+        socket['userId'] = userId;
+        console.log('logged into socket -', userId + '-' + user.username);
+
+        this.socketClients.confirmLogin(userId);
+        this.socketClients.broadcastUserStatusChanged(userId, true);
+      });
   }
 
 
