@@ -9,37 +9,36 @@ export class ChatSocketService {
 
   private pendingMessages: Message[] = [];
 
+  private retryTime: number = 1000;
+  private timeoutInCourse: any;
+
   /** @ngInject */
   constructor(private $log: angular.ILogService,
               private $q: angular.IQService,
               private PrincipalService: PrincipalService,
               private ChatService: ChatService,
+              private $timeout: angular.ITimeoutService,
               private MySocket) {
 
     let socket = MySocket;
 
     socket.on('connect', () => {
       this.$log.debug('Socket connected');
-      if (PrincipalService.isAuthenticated()) {
-        this.login();
-      }
+      this.connectedChange(false);
     });
 
     socket.on('not auth', (message: {message: any}) => {
       this.$log.debug('Not authed', message.message);
-      this.connected = false;
-      if (PrincipalService.isAuthenticated()) {
-        this.login();
-      }
+      this.connectedChange(false);
     });
 
     socket.on('login', (data) => {
-      this.connected = true;
-      this.$log.debug("Logged in into socket");
+      this.connectedChange(true);
     });
 
     socket.on('disconnected', () => {
-      this.connected = false;
+      this.$log.info('socket disconnected'); //do we need to retry
+      //this.connectedChange(false);
     });
 
     // Whenever the server emits 'new message', update the chat body
@@ -73,6 +72,14 @@ export class ChatSocketService {
     socket.on('model error', (data) => {
       console.error(data);
     });
+
+    socket.on('login error', (data) => {
+      console.error(data);
+
+      $timeout(()=> {
+        this.login()
+      }, 5000);
+    });
   }
 
   isConnected = () => {
@@ -80,7 +87,7 @@ export class ChatSocketService {
   };
 
   login = () => {
-    this.$log.log('trying to login');
+
     this.MySocket.emit('login', this.PrincipalService.getToken());
   };
 
@@ -93,4 +100,27 @@ export class ChatSocketService {
     message['pending'] = deferred;
     return deferred.promise;
   };
+
+
+  private connectedChange(newStatus){
+    this.connected = newStatus;
+
+    if(!this.connected) {
+      this.$log.log('trying to login');
+      if(this.timeoutInCourse) {
+        return;
+      }
+      this.timeoutInCourse = this.$timeout(()=> {
+        this.retryTime *= 2;
+        this.timeoutInCourse = null;
+        if (this.PrincipalService.isAuthenticated()) {
+          this.login();
+        }
+      }, this.retryTime);
+    }else {
+      this.retryTime = 1000;
+      this.timeoutInCourse && this.$timeout.cancel(this.timeoutInCourse);
+      this.$log.debug("Logged in into socket");
+    }
+  }
 }

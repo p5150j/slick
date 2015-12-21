@@ -112,7 +112,7 @@ export class ChatService {
 
     room.messages = room.messages || [];
     room.messages.sort((m1, m2) => {
-      return (m1.ts < m2.ts) ? 0 : 1;
+      return (m1.ts < m2.ts) ? -1 : 1;
     });
     room.messages.forEach((message) => {
       this.prepareMessage(message);

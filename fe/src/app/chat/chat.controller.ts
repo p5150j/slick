@@ -16,6 +16,7 @@ export class ChatController {
 
   /* @ngInject */
   constructor(private ChatService: ChatService,
+              private ChatSocketService: ChatSocketService,
               private $state: angular.ui.IStateService,
               private toastr: any,
               private $mdMedia,
@@ -28,6 +29,7 @@ export class ChatController {
     //this.rooms = [];
 
     $rootScope.$mdMedia = $mdMedia;
+    ChatSocketService.login();
 
     //ChatService.addListener(this);
 

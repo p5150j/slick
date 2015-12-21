@@ -62,7 +62,7 @@ export class SocketRoute {
       // when the client emits 'add user', this listens and executes
       socket.on('login', (accessToken: string) => {
 
-        return this.sendErrorsBack(socket, this.SocketController.login(accessToken, socket));
+        return this.sendErrorsBack(socket, this.SocketController.login(accessToken, socket), 'login error');
 
       });
 
@@ -96,9 +96,9 @@ export class SocketRoute {
     });
   }
 
-  private sendErrorsBack(socket, promise) {
+  private sendErrorsBack(socket, promise, tag = 'model error') {
     return promise.then(null, (reason: any) => {
-      socket.emit('model error', {
+      socket.emit(tag, {
         message: reason
       });
     });
