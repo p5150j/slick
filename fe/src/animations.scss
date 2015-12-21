@@ -1,0 +1,30 @@
+@import '../node_modules/animate.css/animate.min.css';
+
+//We use animate.css, but we need to wrapp it in angular (ng-enter,ng-leave). We can use 'animate' api! awesome animations very easily
+
+.animated-slideInDown {
+  &.ng-enter {
+    -webkit-animation: slideInDown 0.5s;
+    -moz-animation: slideInDown 0.5s;
+    -ms-animation: slideInDown 0.5s;
+    animation: slideInDown 0.5s;
+  }
+  &.ng-leave {
+    //-webkit-animation: fadeOut 0.3s;
+    -webkit-animation: slideOutUp 0.3s;
+    -moz-animation: slideOutUp 0.3s;
+    -ms-animation: slideOutUp 0.3s;
+    animation: slideOutUp 0.3s;
+  }
+}
+
+.animated-fadeIn {
+  &.ng-enter {
+    -webkit-animation: fadeIn 0.5s;
+    -moz-animation: fadeIn 0.5s;
+    -ms-animation: fadeIn 0.5s;
+    animation: fadeIn 0.5s;
+  }
+  &.ng-leave {
+  }
+}

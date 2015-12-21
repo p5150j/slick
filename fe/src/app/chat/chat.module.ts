@@ -11,7 +11,7 @@ import { RoomController } from './room/room.controller';
 
 var io: any = <any>require('socket.io-client');
 
-console.log('loading chat');
+
 angular.module('slick.chat', [
     'btford.socket-io',
   ])

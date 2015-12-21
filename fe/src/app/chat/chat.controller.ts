@@ -8,16 +8,14 @@ import {Room} from "../shared/api-models";
 export class ChatController {
 
   public myArticles: any[];
-  public logMessages: string[];
 
-  public users: any[];
-  public rooms: any[];
+  //public users: any[];
+  //public rooms: any[];
   public currentRoom: any; //room object
 
 
   /* @ngInject */
   constructor(private ChatService: ChatService,
-              private ChatSocketService: ChatSocketService,
               private $state: angular.ui.IStateService,
               private toastr: any,
               private $mdMedia,
@@ -26,17 +24,16 @@ export class ChatController {
               initialData
   ) {
 
-    this.logMessages = [];
-    this.users = [];
-    this.rooms = [];
+    //this.users = [];
+    //this.rooms = [];
 
     $rootScope.$mdMedia = $mdMedia;
 
-    ChatSocketService.addMessageListener(this);
+    //ChatService.addListener(this);
 
     //ChatService.getInitialData().then((initialData: any)=> {
-      this.users = initialData.users;
-      this.rooms = initialData.rooms;
+    //  this.users = initialData.users;
+    //  this.rooms = initialData.rooms;
     //});
   }
 
@@ -45,41 +42,20 @@ export class ChatController {
       .toggle()
   };
 
-  addChatMessage(data: Message) {
-    this.ChatService.prepareMessage(data); //this should come from the service -> data is 'prepared' there
-    let allRooms = this.ChatService.getRooms();
-    let room;
-
-    if (room = allRooms[data.room]) {
-      if (room == this.currentRoom) {
-        //animate?
-      } else {
-        room.pending++;
-      }
-
-      room.messages.push(data); //@TODO: sort
-    } else {
-      this.ChatService.getRoomById(data.room).then((room) => {
-        room.pending++;
-        this.rooms.push(room);
-      });
-      //console.log('Created new room!!!');
-    }
-
-  }
+  //onNewRoom(room) {
+  //  this.rooms.push(room);
+  //}
 
   onRoomSelected(room: Room) {
     if (this.currentRoom == room) {
       return;
     }
-    room.pending = 0;
+    //room.pending = 0;
     this.currentRoom = room;
     this.$state.go('chat.room', {'roomId': room._id});
   }
-
-  userStatusChanged(userId, status) {
-    //_.find(this.users, {userId: userId}).online = status; //needs to be faster?
-    this.ChatService.getUsers()[userId].online = status; //it's the same object as in our list!
+  onRoomLoaded(room: Room){ //called by child
+    this.currentRoom = room; //may not be set on first load
   }
 
   get() {

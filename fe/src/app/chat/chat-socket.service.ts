@@ -1,12 +1,11 @@
 import {Message} from "../shared/api-models";
 import {PrincipalService} from "../login/principal.service";
 import IPromise = angular.IPromise;
+import {ChatService} from "./chat.service";
 
 export class ChatSocketService {
 
   private connected: boolean = false;
-
-  private listener;
 
   private pendingMessages: Message[] = [];
 
@@ -14,6 +13,7 @@ export class ChatSocketService {
   constructor(private $log: angular.ILogService,
               private $q: angular.IQService,
               private PrincipalService: PrincipalService,
+              private ChatService: ChatService,
               private MySocket) {
 
     let socket = MySocket;
@@ -55,33 +55,18 @@ export class ChatSocketService {
           }
         }
       }
-      this.listener.addChatMessage(data)
+      ChatService.addChatMessage(data);
+      //this.listener.addChatMessage(data)
     });
-
-    //// Whenever the server emits 'user joined', log it in the chat body
-    //socket.on('user joined', (data) => {
-    //  this.$log.debug(data.username + ' joined');
-    //  this.addParticipantsMessage(data);
-    //});
-    //
-    //// Whenever the server emits 'user left', log it in the chat body
-    //socket.on('user left', (data) => {
-    //  this.$log.debug(data.username + ' left');
-    //  this.addParticipantsMessage(data);
-    //  //removeChatTyping(data);
-    //});
-
 
     socket.on('user status', (data: {user:string, online:boolean}) => {
-      this.listener.userStatusChanged(data.user, data.online );
+      this.ChatService.userStatusChanged(data.user, data.online );
     });
 
-    // Whenever the server emits 'typing', show the typing message
     socket.on('typing', (data) => {
       //addChatTyping(data);
     });
 
-    // Whenever the server emits 'stop typing', kill the typing message
     socket.on('stop typing', (data) => {
       //removeChatTyping(data);
     });
@@ -92,10 +77,6 @@ export class ChatSocketService {
 
   isConnected = () => {
     return this.connected;
-  };
-
-  addMessageListener = (listener) => {
-    this.listener = listener;
   };
 
   login = () => {
