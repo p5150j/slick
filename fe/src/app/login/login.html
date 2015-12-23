@@ -1,31 +1,27 @@
-<div class="login-container" layout="column" flex="100" layout-align="center">
+<div class="login-container" layout="row" flex="100" layout-align="center center">
 
-  <div class="md-padding" layout="row" layout-wrap layout-align="center start">
-    <div class="login-form" layout="column">
+  <md-card class="login-form" flex-xs="100">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Login Sir/Mis</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content class="md-padding">
+      <md-input-container class="md-block">
+        <label>Enter your name</label>
+        <input type="text" ng-model="vm.user.username" required>
+      </md-input-container>
+      <md-input-container class="md-block">
+        <label>Password</label>
+        <input ng-model="vm.user.password" type="password">
+      </md-input-container>
 
-      <md-card>
-        <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">Login Sir/Mis</span>
-          </md-card-title-text>
-        </md-card-title>
-        <md-card-content class="md-padding">
-          <md-input-container class="md-block">
-            <label>Enter your name</label>
-            <input type="text" ng-model="vm.user.username" required>
-          </md-input-container>
-          <md-input-container class="md-block">
-            <label>Password</label>
-            <input ng-model="vm.user.password" type="password">
-          </md-input-container>
+      <div layout="row" layout-align="end center">
+        <md-button class="md-raised" flex="50" flex-sm="100" flex-xs="100" ng-click="vm.login()">Login</md-button>
+      </div>
+    </md-card-content>
 
-          <div layout="row" layout-align="end center">
-                <md-button class="md-raised" flex="50" flex-sm="100" ng-click="vm.login()">Login</md-button>
-            </div>
-        </md-card-content>
+    <p>{{vm.errorMessage}}</p>
+  </md-card>
 
-        <p>{{vm.errorMessage}}</p>
-      </md-card>
-    </div>
-  </div>
 </div>

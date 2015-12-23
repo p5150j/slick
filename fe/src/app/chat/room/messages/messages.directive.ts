@@ -13,7 +13,8 @@ export function Messages(): angular.IDirective {
     controllerAs: 'vm',
     bindToController: {
       slMessages: '=',
-      slTop: '='
+      slTop: '=',
+      slSelectionMode: '='
     },
     link: ($scope, $element, $attrs, $controller) => {
 

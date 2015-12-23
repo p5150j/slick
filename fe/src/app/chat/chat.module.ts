@@ -8,6 +8,7 @@ import { Messages } from './room/messages/messages.directive'
 
 //import { Room } from './room/room.directive'
 import { RoomController } from './room/room.controller';
+import { RoomToolbar } from './room/room-toolbar.directive';
 
 var io: any = <any>require('socket.io-client');
 
@@ -21,6 +22,7 @@ angular.module('slick.chat', [
   .controller('RoomController', RoomController)
   .directive('slSidebar', Sidebar)
   .directive('slMessages', Messages)
+  .directive('slRoomToolbar', RoomToolbar)
   //.directive('slRoom', Room)
 
 
