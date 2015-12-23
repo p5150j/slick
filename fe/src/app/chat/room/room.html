@@ -1,34 +1,11 @@
-<div layout="column" layout-fill ng-init="view = {}">
-  <md-toolbar class="md-whiteframe-z1">
-    <div class="md-toolbar-tools">
-      <md-button class="md-raised md-icon-button" aria-label="Show Menu" ng-click="chatVm.toggleToolbar()"
-                 ng-show="!$mdMedia('gt-xs')">
-        <ng-md-icon aria-label="Menu" icon="menu"></ng-md-icon>
-      </md-button>
-      <h2>
-        <span>{{::vm.slRoom.displayName}}</span>
-      </h2>
-      <span flex></span>
+<div layout="column" layout-fill>
+  <sl-room-toolbar
+    sl-room="vm.slRoom"
+    sl-on-create-note-mode="vm.onCreateNoteMode(state)"
 
-      <div ng-if="::(vm.slRoom.type == 'GIM')">
-        <a ng-click="alert('click'); view.showUsers = !view.showUsers" href="">
-          <small>
-            <ng-md-icon aria-label="Users" class="pull-left" icon="people"></ng-md-icon>
-            {{::vm.slRoom.users.length}}
-          </small>
-        </a>
-      </div>
+  ></sl-room-toolbar>
 
-      <md-button class="md-icon-button" aria-label="More">
-        <ng-md-icon aria-label="More" icon="more_vert"></ng-md-icon>
-      </md-button>
-    </div>
-  </md-toolbar>
-  <div ng-if="view.showUsers" class="gim-users animated-slideInDown">
-    <span ng-repeat="u in vm.slRoom.usersObj" class="gim-user"> {{::u.username}}</span>
-  </div>
-
-  <main flex class="animated-fadeIn" sl-messages="::vm.slRoom.messages">
+  <main flex class="animated-fadeIn" sl-messages="::vm.slRoom.messages" sl-selection-mode="vm.isSelectionMode">
     <!--<div layout-padding flex layout="column" ></div>-->
   </main>
 

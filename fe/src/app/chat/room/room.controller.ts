@@ -9,6 +9,8 @@ export class RoomController {
   public slRoom: Room; //room
   public isConnected: Function;
 
+  public isSelectionMode: boolean;
+
   constructor(private ChatSocketService: ChatSocketService,
               private ChatService: ChatService,
               private $stateParams: angular.ui.IStateParamsService,
@@ -30,6 +32,10 @@ export class RoomController {
       }, 50);
     });
   }
+
+  onCreateNoteMode = (state) => {
+    this.isSelectionMode = state;
+  };
 
   scrollDown = () => {
     let $element: any = angular.element;

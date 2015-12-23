@@ -1,4 +1,5 @@
 .sl-chat {
+
   ng-md-icon {
     line-height: 0;
   }
@@ -10,12 +11,16 @@
     max-width: 250px;
     min-height: 100%;
     color: #eee;
+    .md-toolbar-tools {
+      ng-md-icon {
+        fill: ghostwhite;
+      }
+    }
     ng-md-icon {
-      float: right;
       fill: grey;
 
       &.online {
-        fill: mediumseagreen;
+        fill: forestgreen;
       }
       &.gim {
         fill: ghostwhite;
@@ -41,13 +46,41 @@
     .placeholder {
       font-size: 40px;
       text-align: center;
-      padding: 80px;
+      margin: auto;
     }
+
     md-toolbar {
       background: #f6f6f6 !important;
       color: #202020 !important;
       z-index: 3;
+
+      .actions {
+        ng-md-icon {
+          display: inline-block
+        }
+        button {
+
+        }
+        .gim-action {
+          position: relative;
+          .gim-count {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+          }
+        }
+        .ok {
+
+          margin-bottom: 5px;
+          fill: forestgreen;
+        }
+        .cancel {
+          margin-bottom: 5px;
+          fill: crimson;
+        }
+      }
     }
+
     .gim-users {
       background: darkgrey;
       position: absolute;
@@ -66,13 +99,72 @@
     main {
       overflow-y: auto;
       background-color: white;
-    }
 
-    sl-messages {
-      .pending-message {
-        color: grey;
+      .chat {
+        margin-bottom: 5px;
+        font-size: 12px;
+        background: #fff;
+        position: relative;
+
+        .chat-history {
+          /*  height: 300px;*/
+          padding: 0px 24px 0px 24px;
+          overflow-y: auto;
+        }
+
+        .chat-history + .chat-history:before {
+          content: "";
+          width: 99%;
+          height: 1px;
+          border-bottom: 1px #CCC solid;
+          display: block;
+          margin: auto;
+        }
+
+
+        .chat-message {
+          margin: 16px 0;
+        }
+
+        .chat-message img {
+          border-radius: 50%;
+          float: left;
+        }
+
+        .chat-message-content {
+          margin-left: 56px;
+        }
+
+        .chat-time {
+          float: right;
+          font-size: 10px;
+        }
+
+        .chat-feedback {
+          font-style: italic;
+          margin: 0 0 0 80px;
+        }
+
+        &.selection-mode {
+          .unselected-overlay {
+            position: absolute;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 4;
+          }
+          .chat-history.selected {
+            position: relative;
+            z-index: 5;
+            background-color: whitesmoke;
+          }
+        }
       }
     }
+
 
     .message-input {
       padding: 0 10px 10px 20px;
@@ -244,44 +336,10 @@ p {
   width: 16px;
 }
 
-.chat {
-  margin-bottom: 5px;
-  font-size: 12px;
-  background: #fff;
 
-  .pending {
-    color: yellowgreen;
-  }
-}
 
-.chat-history {
-  /*  height: 300px;*/
-  padding: 8px 24px 0px 24px;
-  overflow-y: auto;
-}
 
-.chat-message {
-  margin: 16px 0;
-}
 
-.chat-message img {
-  border-radius: 50%;
-  float: left;
-}
-
-.chat-message-content {
-  margin-left: 56px;
-}
-
-.chat-time {
-  float: right;
-  font-size: 10px;
-}
-
-.chat-feedback {
-  font-style: italic;
-  margin: 0 0 0 80px;
-}
 
 .nav {
   margin: 0;

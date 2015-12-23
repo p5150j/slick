@@ -10,11 +10,15 @@
 
   .login-form {
     min-width: 450px;
+    width: 450px;
+
     md-card-title {
+
       background: cornflowerblue;
       color: white;
+      min-height: 20px; /*ie...*/
     }
-    md-card-content: {
+    md-card-content {
       padding-bottom: 0px;
     }
   }

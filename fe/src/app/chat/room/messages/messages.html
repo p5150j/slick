@@ -1,6 +1,6 @@
 <!--<md-virtual-repeat-container class="chat" md-top-index="ctrl.topIndex">-->
   <!--<div class="chat-history" md-virtual-repeat="msg in vm.slMessages" md-item-size="73">-->
-<div class="chat" md-top-index="ctrl.topIndex">
+<div class="chat" ng-if="!vm.slSelectionMode">
   <div class="chat-history" ng-repeat="msg in vm.slMessages">
     <div class="chat-message clearfix" ng-class="::{'pending': !msg.date, 'animated fadeIn': msg.date}">
       <img src="http://lorempixum.com/32/32/people" alt="" width="32" height="32">
@@ -17,7 +17,29 @@
         <p> {{::msg.text}}</p>
       </div>
     </div>
-    <hr>
   </div>
 </div>
 <!--</div>-->
+
+
+
+<div class="chat selection-mode" ng-if="vm.slSelectionMode" >
+  <div class="unselected-overlay"></div>
+  <div class="chat-history" ng-repeat="msg in vm.slMessages" ng-click="msg.isSelected = !msg.isSelected" ng-class="{'selected': msg.isSelected}">
+    <div class="chat-message">
+      <img src="http://lorempixum.com/32/32/people" alt="" width="32" height="32">
+
+      <div class="chat-message-content clearfix">
+	                  <span class="chat-time" ng-if="::msg.date">
+	                    sent on: {{::msg.date}}
+	                  </span>
+                   <span class="chat-time" ng-if="::!msg.date">
+	                    Pending!
+	                  </span>
+        <h5>{{::msg.userObj.username}}</h5>
+
+        <p> {{::msg.text}}</p>
+      </div>
+    </div>
+  </div>
+</div>

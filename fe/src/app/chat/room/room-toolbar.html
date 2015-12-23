@@ -1,0 +1,45 @@
+<md-toolbar class="md-whiteframe-z1" ng-init="view = {}">
+  <div class="md-toolbar-tools">
+    <md-button class="md-icon-button" aria-label="Show Menu" ng-click="vm.toggleToolbar()" ng-show="!$mdMedia('gt-xs')">
+      <ng-md-icon aria-label="Menu" icon="menu"></ng-md-icon>
+    </md-button>
+    <h2>
+      <span>{{::vm.slRoom.displayName}}</span>
+    </h2>
+    <span flex></span>
+
+    <section layout="row" class="actions animated-fadeIn" ng-if="vm.createNoteActive">
+
+      <md-button class="md-icon-button" ng-click="vm.onCreateNoteMode(false)">
+        <ng-md-icon aria-label="ok" class="ok" icon="check" size="32"></ng-md-icon>
+      </md-button>
+
+      <md-button class="md-icon-button" ng-click="vm.onCreateNoteMode(false)">
+        <ng-md-icon aria-label="ok" class="cancel" icon="close" size="32"></ng-md-icon>
+      </md-button>
+
+    </section>
+
+
+    <section layout="row" class="actions animated-fadeIn" ng-if="!vm.createNoteActive">
+      <md-button class="md-icon-button" ng-click="vm.onCreateNoteMode(true)">
+        <ng-md-icon aria-label="create note" icon="event_note"></ng-md-icon>
+      </md-button>
+
+      <div class="gim-action" ng-if="::(vm.slRoom.type == 'GIM')">
+        <md-button ng-click="view.showUsers = !view.showUsers" class="md-icon-button">
+          <ng-md-icon aria-label="Users" class="pull-left" icon="people"></ng-md-icon>
+          </md-button>
+        <small class="gim-count">{{::vm.slRoom.users.length}}</small>
+      </div>
+
+      <md-button class="md-icon-button" aria-label="More">
+        <ng-md-icon aria-label="More" icon="more_vert"></ng-md-icon>
+      </md-button>
+    </section>
+
+  </div>
+</md-toolbar>
+<div ng-if="view.showUsers" class="gim-users animated-slideInDown">
+  <span ng-repeat="u in vm.slRoom.usersObj" class="gim-user"> {{::u.username}}</span>
+</div>
