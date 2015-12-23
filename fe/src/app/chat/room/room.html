@@ -5,14 +5,14 @@
 
   ></sl-room-toolbar>
 
-  <main flex class="animated-fadeIn" sl-messages="::vm.slRoom.messages" sl-selection-mode="vm.isSelectionMode">
+  <main flex sl-messages="::vm.slRoom.messages" sl-selection-mode="vm.isSelectionMode" >
     <!--<div layout-padding flex layout="column" ></div>-->
   </main>
 
 
   <footer>
 
-    <md-content class="message-input">
+    <md-content class="message-input animated-slideInUp" ng-if="!vm.isSelectionMode">
       <!--//@TODO - make this autoresizeable-->
       <textarea type="text"
           ng-disabled="!vm.isConnected()"

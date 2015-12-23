@@ -29,7 +29,6 @@ export function RoomToolbar(): angular.IDirective {
   public slOnCreateNoteMode: Function;
 
   constructor(private $mdSidenav: any) {
-    console.log('someone is creating me');
   }
 
   onCreateNoteMode = (state) => {

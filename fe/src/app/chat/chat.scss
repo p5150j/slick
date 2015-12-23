@@ -41,7 +41,7 @@
     position: relative;
     height: 100vh;
     overflow: hidden;
-    background-color: #ECECEC;
+    background-color: white;
 
     .placeholder {
       font-size: 40px;
@@ -103,7 +103,7 @@
       .chat {
         margin-bottom: 5px;
         font-size: 12px;
-        background: #fff;
+
         position: relative;
 
         .chat-history {
@@ -120,7 +120,6 @@
           display: block;
           margin: auto;
         }
-
 
         .chat-message {
           margin: 16px 0;
@@ -146,6 +145,9 @@
         }
 
         &.selection-mode {
+          *:focus {
+            outline: 0;
+          }
           .unselected-overlay {
             position: absolute;
             pointer-events: none;
@@ -156,7 +158,7 @@
             background: rgba(0, 0, 0, 0.4);
             z-index: 4;
           }
-          .chat-history.selected {
+          .chat-history.is-selected {
             position: relative;
             z-index: 5;
             background-color: whitesmoke;
@@ -165,23 +167,30 @@
       }
     }
 
+    footer {
 
-    .message-input {
-      padding: 0 10px 10px 20px;
-      textarea {
-        width: calc(100% - 30px);
-        overflow: auto;
-        resize: none;
-        outline: none;
-        height: 60px;
-        padding: 5px 10px;
-        box-sizing: border-box;
-        border: 1px solid #dEdEdE;
-        border-radius: 4px;
-        background-color: #fff;
-        &:focus {
-          background-color: lavender;
-          border: 2px solid #dEdEdE;
+      .message-input {
+        background-color: #f6f6f6;
+        border-top: 1px #DDD solid;
+        padding: 6px 10px 10px 20px;
+        textarea {
+          width: calc(100% - 30px);
+          overflow: auto;
+          resize: none;
+          outline: none;
+          height: 60px;
+          padding: 5px 10px;
+          box-sizing: border-box;
+          border: 1px solid #dEdEdE;
+          border-radius: 4px;
+          background-color: ghostwhite;
+          &:focus {
+            background-color: white;
+            border: 1px solid #DDD;
+          }
+          &:disabled {
+            background-color: cornsilk;
+          }
         }
       }
     }
@@ -189,8 +198,8 @@
 }
 
 body {
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
   font-family: 'Raleway', sans-serifimportant;
 }
 
@@ -335,11 +344,6 @@ p {
   text-align: center;
   width: 16px;
 }
-
-
-
-
-
 
 .nav {
   margin: 0;
