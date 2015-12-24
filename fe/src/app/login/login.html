@@ -1,6 +1,5 @@
-<div class="login-container" layout="row" flex="100" layout-align="center center">
-
-  <md-card class="login-form" flex-xs="100">
+<div class="login-container md-padding" layout="column" flex="100" layout-align="center center">
+  <md-card class="login-form">
     <md-card-title>
       <md-card-title-text>
         <span class="md-headline">Login Sir/Mis</span>
@@ -17,11 +16,14 @@
       </md-input-container>
 
       <div layout="row" layout-align="end center">
-        <md-button class="md-raised" flex="50" flex-sm="100" flex-xs="100" ng-click="vm.login()">Login</md-button>
+        <md-button class="md-raised md-primary" flex="50" flex-xs="80" ng-click="vm.login()">Login</md-button>
       </div>
-    </md-card-content>
 
+    </md-card-content>
     <p>{{vm.errorMessage}}</p>
   </md-card>
 
+  <div layout="row" layout-align="end center">
+    <a href="" >forgot password</a>
+  </div>
 </div>

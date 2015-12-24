@@ -1,3 +1,5 @@
+@import '../../vars';
+
 .login-container {
   background: rgba(255,255,255,1);
   background: -moz-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(230,230,230,1) 44%, rgba(207,205,207,1) 100%);
@@ -13,13 +15,12 @@
     width: 450px;
 
     md-card-title {
-
-      background: cornflowerblue;
-      color: white;
+      background: $md-primary;
+      color: $white-text;
       min-height: 20px; /*ie...*/
     }
     md-card-content {
-      padding-bottom: 0px;
+      padding-bottom: 0;
     }
   }
 }
