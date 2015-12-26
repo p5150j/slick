@@ -1,23 +1,25 @@
+@import '../../vars';
+
 .sl-chat {
 
   ng-md-icon {
     line-height: 0;
+    display: inherit;
   }
 
   .left-panel {
-    font-size: 11px;
-    background: #3A4141;
+    background-color: $md-primary-dark;
+    color: $white-text;
     min-width: 250px;
     max-width: 250px;
     min-height: 100%;
-    color: #eee;
     .md-toolbar-tools {
       ng-md-icon {
         fill: ghostwhite;
       }
     }
     ng-md-icon {
-      fill: grey;
+      fill: gray;
 
       &.online {
         fill: forestgreen;
@@ -27,12 +29,12 @@
       }
     }
     .selected-room {
-      background-color: lightslategrey;
+      background-color: $md-ascent;
     }
     .pending-count {
       float: right;
       margin-right: 10px;
-      color: ghostwhite;
+      //color: ghostwhite;
       font-size: 1.2em;
     }
 
@@ -50,17 +52,12 @@
     }
 
     md-toolbar {
-      background: #f6f6f6 !important;
-      color: #202020 !important;
+      background: $secondary-toolbar !important;
+      color:  $black-text;
       z-index: 3;
 
       .actions {
-        ng-md-icon {
-          display: inline-block
-        }
-        button {
 
-        }
         .gim-action {
           position: relative;
           .gim-count {
@@ -70,19 +67,17 @@
           }
         }
         .ok {
-
-          margin-bottom: 5px;
           fill: forestgreen;
         }
         .cancel {
-          margin-bottom: 5px;
           fill: crimson;
         }
       }
     }
 
     .gim-users {
-      background: darkgrey;
+      background: $md-primary;
+      color: $white-text;
       position: absolute;
       font-size: 14px;
       z-index: 1;
@@ -92,7 +87,6 @@
         padding: 2px 10px;
         display: inline-block;
         margin: 3px 5px;
-        color: ghostwhite;
       }
     }
 
@@ -161,7 +155,7 @@
           .chat-history.is-selected {
             position: relative;
             z-index: 5;
-            background-color: whitesmoke;
+            background-color: lighten($md-ascent, 40%);
           }
         }
       }
